@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.NhaCungCapController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="🏭 QUẢN LÝ NHÀ CUNG CẤP" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblTongNCC" text="0 nhà cung cấp" style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="🏭" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblTongNhaCungCap" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="Tổng NCC" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="⭐" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblNCCDanhGiaCao" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Đánh giá 5 sao" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="📦" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblLoaiSP" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label text="Loại sản phẩm" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Thanh công cụ -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 10; -fx-background-radius: 8;">
+        <TextField fx:id="txtTimKiem" promptText="🔍 Tìm kiếm NCC..." prefWidth="280" style="-fx-pref-height: 35px;"/>
+        <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ Thêm nhà cung cấp" onAction="#themMoi" styleClass="btn-primary"/>
+    </HBox>
+    
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Bảng dữ liệu -->
+        <TableView fx:id="tableNCC" HBox.hgrow="ALWAYS" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="colMa" text="Mã" prefWidth="60"/>
+                <TableColumn fx:id="colTen" text="Tên NCC" prefWidth="200"/>
+                <TableColumn fx:id="colDienThoai" text="Điện thoại" prefWidth="130"/>
+                <TableColumn fx:id="colLoaiSP" text="Loại SP" prefWidth="120"/>
+                <TableColumn fx:id="colDanhGia" text="Đánh giá" prefWidth="100"/>
+            </columns>
+        </TableView>
+        
+        <!-- Form nhập liệu với ScrollPane -->
+        <ScrollPane fitToWidth="true" minWidth="300" maxWidth="350" style="-fx-background-color: transparent;">
+            <VBox spacing="10" styleClass="form-pane">
+                <padding><Insets topRightBottomLeft="15"/></padding>
+                
+                <Label text="📝 THÔNG TIN NHÀ CUNG CẤP" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+                
+                <Label text="Tên NCC:" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtTen" promptText="Nhập tên nhà cung cấp"/>
+                
+                <Label text="Điện thoại:" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtDienThoai" promptText="0901234567"/>
+                
+                <Label text="Địa chỉ:"/>
+                <TextField fx:id="txtDiaChi" promptText="Địa chỉ nhà cung cấp"/>
+                
+                <Label text="Email:"/>
+                <TextField fx:id="txtEmail" promptText="email@company.com"/>
+                
+                <Label text="Loại sản phẩm:" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="cboLoaiSP" prefWidth="270" promptText="Chọn loại sản phẩm"/>
+                
+                <Label text="Đánh giá (1-5 sao):" style="-fx-font-weight: bold;"/>
+                <Spinner fx:id="spnDanhGia" prefWidth="100"/>
+                
+                <Label text="Ghi chú:"/>
+                <TextArea fx:id="txtGhiChu" prefHeight="60" promptText="Ghi chú về nhà cung cấp..."/>
+                
+                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10 0 0 0;">
+                    <Button text="💾 Lưu" onAction="#luu" styleClass="btn-primary"/>
+                    <Button text="📊 Lịch sử" onAction="#xemLichSu" styleClass="btn-secondary"/>
+                    <Button text="🗑️ Xóa" onAction="#xoa" styleClass="btn-icon-danger"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </HBox>
+</VBox>

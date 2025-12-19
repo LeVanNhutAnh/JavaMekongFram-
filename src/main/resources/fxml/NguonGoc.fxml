@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.NguonGocController"
+      spacing="0" styleClass="content-page">
+    
+    <!-- Header -->
+    <VBox alignment="CENTER" spacing="5" style="-fx-padding: 20 25 15 25;">
+        <Label text="🔍 NGUỒN GỐC SẢN PHẨM" styleClass="page-title"/>
+        <Label text="Tra cứu và quản lý thông tin nguồn gốc nông sản" 
+               style="-fx-text-fill: #64748b; -fx-font-size: 13px;"/>
+    </VBox>
+    
+    <!-- Tab Pane -->
+    <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE" 
+             style="-fx-padding: 0 20 20 20;">
+        
+        <!-- Tab 1: Tra cứu (cho khách hàng) -->
+        <Tab text="🔍 Tra cứu" closable="false">
+            <VBox fx:id="tabTraCuu" spacing="20" style="-fx-padding: 20;">
+                <!-- Sẽ được load từ controller -->
+            </VBox>
+        </Tab>
+        
+        <!-- Tab 2: Quản lý (cho admin) -->
+        <Tab text="📋 Quản lý" closable="false">
+            <VBox fx:id="tabQuanLy" spacing="20" style="-fx-padding: 20;">
+                <!-- Sẽ được load từ controller -->
+            </VBox>
+        </Tab>
+        
+    </TabPane>
+</VBox>

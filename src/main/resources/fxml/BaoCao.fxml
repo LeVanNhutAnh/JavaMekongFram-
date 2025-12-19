@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.BaoCaoController"
+      spacing="0" styleClass="content-page">
+    
+    <!-- Header -->
+    <VBox alignment="CENTER" spacing="5" style="-fx-padding: 20 25 15 25;">
+        <Label text="📊 BÁO CÁO" styleClass="page-title"/>
+        <Label text="Thống kê doanh thu và phân tích lãi lỗ" 
+               style="-fx-text-fill: #64748b; -fx-font-size: 13px;"/>
+    </VBox>
+    
+    <!-- Tab Pane -->
+    <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE" 
+             style="-fx-padding: 0 20 20 20;">
+        
+        <!-- Tab 1: Thống kê doanh thu -->
+        <Tab text="📈 Thống kê" closable="false">
+            <VBox fx:id="tabThongKe" spacing="20" style="-fx-padding: 15;">
+                <!-- Sẽ được load từ controller -->
+            </VBox>
+        </Tab>
+        
+        <!-- Tab 2: Lãi/Lỗ -->
+        <Tab text="💹 Lãi/Lỗ" closable="false">
+            <VBox fx:id="tabLaiLo" spacing="20" style="-fx-padding: 15;">
+                <!-- Sẽ được load từ controller -->
+            </VBox>
+        </Tab>
+        
+    </TabPane>
+</VBox>

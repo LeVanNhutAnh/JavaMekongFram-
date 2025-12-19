@@ -1,0 +1,249 @@
+/* ===================================
+   MEKONG FARM - DARK MODE THEME
+   =================================== */
+
+/* Override root variables for dark mode */
+.root {
+    -fx-font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+    -fx-font-size: 13px;
+    -primary-color: #4ade80;
+    -primary-dark: #22c55e;
+    -primary-light: #166534;
+    -bg-color: #0f172a;
+    -card-bg: #1e293b;
+    -text-primary: #f1f5f9;
+    -text-secondary: #94a3b8;
+}
+
+/* Main Container - Dark */
+.main-container {
+    -fx-background-color: #0f172a;
+}
+
+/* Content Area - Dark */
+.content-area {
+    -fx-background-color: #0f172a;
+}
+
+.content-page {
+    -fx-background-color: #0f172a;
+    -fx-padding: 25;
+}
+
+.page-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f1f5f9;
+}
+
+/* Stat Cards - Dark */
+.stat-card {
+    -fx-background-radius: 16;
+    -fx-padding: 28 35;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 4);
+}
+
+.stat-number {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f1f5f9;
+}
+
+.stat-number-small {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f1f5f9;
+}
+
+.stat-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #e2e8f0;
+    -fx-font-weight: 600;
+}
+
+/* Charts - Dark */
+.chart-container {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 16;
+    -fx-padding: 20;
+}
+
+.chart-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #f1f5f9;
+}
+
+/* Form Pane - Dark */
+.form-pane {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+}
+
+/* Tables - Dark */
+.data-table {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12;
+}
+
+.data-table .column-header {
+    -fx-background-color: #334155;
+    -fx-font-weight: 600;
+    -fx-text-fill: #e2e8f0;
+}
+
+.data-table .column-header-background {
+    -fx-background-color: #334155;
+}
+
+.data-table .table-row-cell {
+    -fx-background-color: #1e293b;
+    -fx-border-color: transparent transparent #334155 transparent;
+    -fx-text-fill: #e2e8f0;
+}
+
+.data-table .table-row-cell:odd {
+    -fx-background-color: #263548;
+}
+
+.data-table .table-row-cell:hover {
+    -fx-background-color: #334155;
+}
+
+.data-table .table-row-cell:selected {
+    -fx-background-color: #166534;
+}
+
+.data-table .table-cell {
+    -fx-text-fill: #e2e8f0;
+}
+
+/* Buttons - Dark adjustments */
+.btn-secondary {
+    -fx-background-color: #334155;
+    -fx-text-fill: #e2e8f0;
+    -fx-border-color: #475569;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #475569;
+}
+
+/* Form Input - Dark */
+.form-input {
+    -fx-background-color: #334155;
+    -fx-text-fill: #f1f5f9;
+    -fx-border-color: #475569;
+}
+
+.form-input:focused {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #4ade80;
+}
+
+/* Labels in dark mode */
+.label {
+    -fx-text-fill: #e2e8f0;
+}
+
+/* Combo Box - Dark */
+.combo-box {
+    -fx-background-color: #334155;
+    -fx-border-color: #475569;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #e2e8f0;
+    -fx-background-color: #334155;
+}
+
+/* ScrollPane - Dark */
+.scroll-pane {
+    -fx-background-color: #0f172a;
+    -fx-background: #0f172a;
+}
+
+.scroll-pane>.viewport {
+    -fx-background-color: #0f172a;
+}
+
+/* Chat - Dark */
+.chat-container {
+    -fx-background-color: #0f172a;
+}
+
+.chat-bot {
+    -fx-background-color: #334155;
+    -fx-text-fill: #f1f5f9;
+}
+
+/* Result Card - Dark */
+.result-card {
+    -fx-background-color: rgba(30, 41, 59, 0.95);
+}
+
+.product-name {
+    -fx-text-fill: #4ade80;
+}
+
+.info-label {
+    -fx-text-fill: #94a3b8;
+}
+
+/* Tab Pane - Dark */
+.tab-pane .tab-header-area {
+    -fx-background-color: #1e293b;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #334155;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #0f172a;
+}
+
+.tab-pane .tab-label {
+    -fx-text-fill: #e2e8f0;
+}
+
+/* ListView - Dark */
+.list-view {
+    -fx-background-color: #1e293b;
+}
+
+.list-view .list-cell {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #e2e8f0;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #334155;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #166534;
+}
+
+/* TextField - Dark */
+.text-field {
+    -fx-background-color: #334155;
+    -fx-text-fill: #f1f5f9;
+    -fx-border-color: #475569;
+    -fx-prompt-text-fill: #64748b;
+}
+
+.text-field:focused {
+    -fx-border-color: #4ade80;
+}
+
+/* TextArea - Dark */
+.text-area {
+    -fx-background-color: #334155;
+    -fx-text-fill: #f1f5f9;
+}
+
+.text-area .content {
+    -fx-background-color: #334155;
+}

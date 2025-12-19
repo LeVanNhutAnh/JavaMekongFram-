@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.mekongfarm.controller.DangNhapController"
+            styleClass="login-container">
+    
+    <center>
+        <VBox alignment="CENTER" spacing="20" styleClass="login-box">
+            <!-- Logo và tiêu đề -->
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="🌾" styleClass="login-logo"/>
+                <Label text="QUẢN LÝ NÔNG SẢN" styleClass="login-title"/>
+                <Label text="Đồng bằng sông Cửu Long" styleClass="login-subtitle"/>
+            </VBox>
+            
+            <!-- Form đăng nhập -->
+            <VBox spacing="15" styleClass="login-form">
+                <VBox spacing="5">
+                    <Label text="Tên đăng nhập" styleClass="form-label"/>
+                    <TextField fx:id="txtTenDangNhap" promptText="Nhập tên đăng nhập" styleClass="form-input"/>
+                </VBox>
+                
+                <VBox spacing="5">
+                    <Label text="Mật khẩu" styleClass="form-label"/>
+                    <PasswordField fx:id="txtMatKhau" promptText="Nhập mật khẩu" styleClass="form-input"/>
+                </VBox>
+                
+                <CheckBox fx:id="chkNhoMatKhau" text="Ghi nhớ đăng nhập" styleClass="remember-checkbox"/>
+                
+                <Button fx:id="btnDangNhap" text="ĐĂNG NHẬP" onAction="#xuLyDangNhap" 
+                        styleClass="btn-primary" maxWidth="Infinity"/>
+                
+                <Label fx:id="lblThongBao" styleClass="error-label" wrapText="true"/>
+            </VBox>
+            
+            <!-- Footer -->
+            <VBox alignment="CENTER" spacing="5">
+                <Separator/>
+                <Label text="Tài khoản mặc định: admin / admin123" styleClass="hint-text"/>
+                <Label text="© 2024 Mekong Farm Management" styleClass="copyright-text"/>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

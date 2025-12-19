@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.TroLyAIController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="🤖 TRỢ LÝ AI NÔNG NGHIỆP" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="Powered by Gemini AI" style="-fx-font-size: 12px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Tab pane cho 3 chức năng -->
+    <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+        <!-- Tab Chatbot -->
+        <Tab text="💬 Chatbot Tư Vấn" closable="false">
+            <VBox spacing="12">
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f0f9ff; -fx-padding: 10; -fx-background-radius: 8;">
+                    <Label text="🌾" style="-fx-font-size: 20px;"/>
+                    <Label text="Hỏi đáp về kỹ thuật nông nghiệp vùng ĐBSCL - Hỗ trợ 24/7" style="-fx-text-fill: #0369a1;"/>
+                </HBox>
+                
+                <ScrollPane fx:id="scrollChat" VBox.vgrow="ALWAYS" style="-fx-background-color: #f8fafc; -fx-background-radius: 8;">
+                    <VBox fx:id="chatBox" spacing="10" style="-fx-padding: 15;">
+                    </VBox>
+                </ScrollPane>
+                
+                <HBox spacing="10" alignment="CENTER">
+                    <TextField fx:id="txtMessage" promptText="💬 Nhập câu hỏi của bạn..." HBox.hgrow="ALWAYS" 
+                               onAction="#guiTinNhan" style="-fx-pref-height: 40px; -fx-font-size: 14px;"/>
+                    <Button text="📤 Gửi" onAction="#guiTinNhan" styleClass="btn-primary" style="-fx-pref-height: 40px;"/>
+                </HBox>
+                
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="🌾 Hỏi về lúa gạo" onAction="#hoiVeLua" styleClass="btn-secondary"/>
+                    <Button text="🥭 Hỏi về trái cây" onAction="#hoiVeTraiCay" styleClass="btn-secondary"/>
+                    <Button text="🦐 Hỏi về thủy sản" onAction="#hoiVeThuySan" styleClass="btn-secondary"/>
+                    <Button text="🌱 Hỏi về mùa vụ" onAction="#hoiVeMuaVu" styleClass="btn-secondary"/>
+                </HBox>
+            </VBox>
+        </Tab>
+        
+        <!-- Tab Nhận diện ảnh -->
+        <Tab text="📷 Nhận Diện Ảnh" closable="false">
+            <VBox spacing="15" alignment="CENTER">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #ecfdf5; -fx-padding: 10; -fx-background-radius: 8;">
+                    <Label text="📷" style="-fx-font-size: 20px;"/>
+                    <Label text="Upload ảnh nông sản để AI nhận diện loại, chất lượng và gợi ý giá" style="-fx-text-fill: #166534;"/>
+                </HBox>
+                
+                <HBox spacing="25" alignment="CENTER">
+                    <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #f1f5f9; -fx-padding: 20; -fx-background-radius: 12;">
+                        <ImageView fx:id="imgPreview" fitHeight="220" fitWidth="220" preserveRatio="true"/>
+                        <Button text="📁 Chọn ảnh" onAction="#chonAnh" styleClass="btn-primary"/>
+                        <Label fx:id="lblFileName" text="Chưa chọn file" style="-fx-text-fill: #64748b;"/>
+                    </VBox>
+                    
+                    <VBox spacing="10" HBox.hgrow="ALWAYS" minWidth="350">
+                        <Label text="📊 Kết quả nhận diện:" style="-fx-font-weight: bold;"/>
+                        <TextArea fx:id="txtKetQuaAnh" prefHeight="280" wrapText="true" editable="false"
+                                  promptText="Kết quả sẽ hiển thị ở đây sau khi phân tích..." style="-fx-font-size: 13px;"/>
+                        <Button text="🔍 Phân tích ảnh" onAction="#phanTichAnh" styleClass="btn-primary"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </Tab>
+        
+        <!-- Tab Phân tích dữ liệu -->
+        <Tab text="📊 Phân Tích Dữ Liệu" closable="false">
+            <VBox spacing="15">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #fef3c7; -fx-padding: 10; -fx-background-radius: 8;">
+                    <Label text="📊" style="-fx-font-size: 20px;"/>
+                    <Label text="AI phân tích dữ liệu kinh doanh và đưa ra dự đoán thông minh" style="-fx-text-fill: #92400e;"/>
+                </HBox>
+                
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="📈 Phân tích doanh thu" onAction="#phanTichDoanhThu" styleClass="btn-secondary"/>
+                    <Button text="📦 Phân tích sản phẩm" onAction="#phanTichSanPham" styleClass="btn-secondary"/>
+                    <Button text="👥 Phân tích khách hàng" onAction="#phanTichKhachHang" styleClass="btn-secondary"/>
+                    <Button text="📊 Dự báo xu hướng" onAction="#duBaoXuHuong" styleClass="btn-secondary"/>
+                </HBox>
+                
+                <HBox spacing="15" VBox.vgrow="ALWAYS">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="📥 Dữ liệu đầu vào:" style="-fx-font-weight: bold;"/>
+                        <TextArea fx:id="txtDuLieu" VBox.vgrow="ALWAYS" wrapText="true"
+                                  promptText="Nhập hoặc dán dữ liệu cần phân tích..."/>
+                    </VBox>
+                    
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="📤 Kết quả phân tích:" style="-fx-font-weight: bold;"/>
+                        <TextArea fx:id="txtKetQuaPhanTich" VBox.vgrow="ALWAYS" wrapText="true" editable="false"
+                                  promptText="Kết quả sẽ hiển thị ở đây..." style="-fx-background-color: #f0fdf4;"/>
+                    </VBox>
+                </HBox>
+                
+                <Button text="🤖 Phân tích với AI" onAction="#phanTichDuLieu" styleClass="btn-primary"/>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>

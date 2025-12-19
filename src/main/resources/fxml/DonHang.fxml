@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.DonHangController"
+      spacing="15" styleClass="content-page" 
+      style="-fx-background-color: #f5f5f5;">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="🛒 QUẢN LÝ ĐƠN HÀNG" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblTongDon" text="0 đơn hàng" style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="145">
+            <Label text="📋" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblTongDonHang" text="0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="Tổng đơn hàng" style="-fx-font-size: 11px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="145">
+            <Label text="✅" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblDonHoanThanh" text="0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Hoàn thành" style="-fx-font-size: 11px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-orange" alignment="CENTER" spacing="3" prefWidth="145">
+            <Label text="⏳" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblDonDangXuLy" text="0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #c2410c;"/>
+            <Label text="Đang xử lý" style="-fx-font-size: 11px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="145">
+            <Label text="💰" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblTongDoanhThu" text="0 VNĐ" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label text="Tổng doanh thu" style="-fx-font-size: 11px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox fx:id="cardHomNay" styleClass="stat-card" alignment="CENTER" spacing="3" prefWidth="145"
+              style="-fx-background-color: #e0f2fe;">
+            <Label text="📅" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblDonHomNay" text="0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0369a1;"/>
+            <Label text="Hôm nay" style="-fx-font-size: 11px; -fx-text-fill: #0c4a6e;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Thanh công cụ -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 10; -fx-background-radius: 8;">
+        <ComboBox fx:id="cboTrangThai" promptText="📊 Trạng thái" prefWidth="160"/>
+        <DatePicker fx:id="dpTuNgay" promptText="Từ ngày"/>
+        <DatePicker fx:id="dpDenNgay" promptText="Đến ngày"/>
+        <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="📥 Nhập Excel" onAction="#nhapExcel" styleClass="btn-export"/>
+        <Button text="� Xuất Excel" onAction="#xuatExcel" styleClass="btn-export"/>
+        <Button text="�📄 Xuất PDF" onAction="#xuatPDF" styleClass="btn-export"/>
+        <Button text="🖨️ In đơn" onAction="#inDonHang" styleClass="btn-export"/>
+        <Button text="➕ Tạo đơn mới" onAction="#taoDonMoi" styleClass="btn-primary"/>
+    </HBox>
+    
+    <!-- Bảng đơn hàng -->
+    <TableView fx:id="tableDonHang" VBox.vgrow="ALWAYS" minHeight="300" prefHeight="400" 
+               styleClass="data-table">
+        <placeholder>
+            <Label text="Không có đơn hàng nào" style="-fx-text-fill: #94a3b8; -fx-font-style: italic;"/>
+        </placeholder>
+        <columns>
+            <TableColumn text="Mã ĐH" prefWidth="80"><cellValueFactory><PropertyValueFactory property="maDH"/></cellValueFactory></TableColumn>
+            <TableColumn text="Khách hàng" prefWidth="170"><cellValueFactory><PropertyValueFactory property="tenKhachHang"/></cellValueFactory></TableColumn>
+            <TableColumn text="Ngày đặt" prefWidth="130"><cellValueFactory><PropertyValueFactory property="ngayDatFormat"/></cellValueFactory></TableColumn>
+            <TableColumn text="Thành tiền" prefWidth="130"><cellValueFactory><PropertyValueFactory property="thanhTienFormat"/></cellValueFactory></TableColumn>
+            <TableColumn text="Trạng thái" prefWidth="110"><cellValueFactory><PropertyValueFactory property="trangThaiHienThi"/></cellValueFactory></TableColumn>
+            <TableColumn text="Người tạo" prefWidth="120"><cellValueFactory><PropertyValueFactory property="tenNguoiDung"/></cellValueFactory></TableColumn>
+            <TableColumn fx:id="colAction" text="Thao tác" prefWidth="140"/>
+        </columns>
+    </TableView>
+    
+    <!-- Form tạo đơn hàng -->
+    <TitledPane fx:id="paneForm" text="📝 Tạo đơn hàng mới" expanded="false" styleClass="form-pane" maxHeight="500">
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <VBox spacing="12">
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+            <HBox spacing="20">
+                <VBox spacing="5">
+                    <Label text="Mã đơn hàng:" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="txtMaDH" editable="false" prefWidth="100" style="-fx-background-color: #f1f5f9;"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Khách hàng:" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cboKhachHang" prefWidth="250" promptText="Chọn khách hàng..."/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Ghi chú:"/>
+                    <TextField fx:id="txtGhiChu" prefWidth="280" promptText="Ghi chú đơn hàng..."/>
+                </VBox>
+            </HBox>
+            
+            <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: #ecfdf5; -fx-padding: 10; -fx-background-radius: 6;">
+                <Label text="➕ Thêm sản phẩm:" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="cboSanPham" prefWidth="200" promptText="Chọn sản phẩm"/>
+                <TextField fx:id="txtSoLuong" prefWidth="80" promptText="Số lượng"/>
+                <TextField fx:id="txtDonGiaBan" prefWidth="120" promptText="Đơn giá (tùy chọn)"/>
+                <Button text="➕ Thêm vào đơn" onAction="#themSanPham" styleClass="btn-secondary"/>
+            </HBox>
+            
+            <TableView fx:id="tableChiTiet" prefHeight="160" styleClass="data-table">
+                <columns>
+                    <TableColumn text="Sản phẩm" prefWidth="220"><cellValueFactory><PropertyValueFactory property="tenSanPham"/></cellValueFactory></TableColumn>
+                    <TableColumn text="Số lượng" prefWidth="90"><cellValueFactory><PropertyValueFactory property="soLuong"/></cellValueFactory></TableColumn>
+                    <TableColumn text="Đơn giá" prefWidth="110"><cellValueFactory><PropertyValueFactory property="donGiaFormat"/></cellValueFactory></TableColumn>
+                    <TableColumn text="Thành tiền" prefWidth="120"><cellValueFactory><PropertyValueFactory property="thanhTienFormat"/></cellValueFactory></TableColumn>
+                </columns>
+            </TableView>
+            
+            <HBox spacing="20" alignment="CENTER_RIGHT">
+                <Label fx:id="lblTongTien" text="💰 Tổng: 0 VNĐ" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #16a34a;"/>
+                <Button text="💾 Lưu đơn hàng" onAction="#luuDon" styleClass="btn-primary"/>
+                <Button text="❌ Hủy" onAction="#huy" styleClass="btn-secondary"/>
+            </HBox>
+            </VBox>
+        </ScrollPane>
+    </TitledPane>
+</VBox>

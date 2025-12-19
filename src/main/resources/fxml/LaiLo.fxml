@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.LaiLoController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="📊 BÁO CÁO LÃI/LỖ" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblPeriod" text="" style="-fx-font-size: 13px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Bộ lọc -->
+    <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 12; -fx-background-radius: 8;">
+        <Label text="📅 Từ ngày:" style="-fx-font-weight: bold;"/>
+        <DatePicker fx:id="dpTuNgay" prefWidth="140"/>
+        <Label text="📅 Đến ngày:" style="-fx-font-weight: bold;"/>
+        <DatePicker fx:id="dpDenNgay" prefWidth="140"/>
+        <Button text="📊 Tính toán" onAction="#tinhToan" styleClass="btn-primary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Tháng này" onAction="#xemThangNay" styleClass="btn-secondary"/>
+        <Button text="Tháng trước" onAction="#xemThangTruoc" styleClass="btn-secondary"/>
+        <Button text="Năm nay" onAction="#xemNamNay" styleClass="btn-secondary"/>
+    </HBox>
+    
+    <!-- Thống kê tổng quan -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="5" prefWidth="200">
+            <Label text="💰" style="-fx-font-size: 24px;"/>
+            <Label text="DOANH THU" style="-fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label fx:id="lblDoanhThu" text="0 VNĐ" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-orange" alignment="CENTER" spacing="5" prefWidth="200">
+            <Label text="📉" style="-fx-font-size: 24px;"/>
+            <Label text="CHI PHÍ" style="-fx-font-weight: bold; -fx-text-fill: #c2410c;"/>
+            <Label fx:id="lblChiPhi" text="0 VNĐ" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #c2410c;"/>
+        </VBox>
+        <VBox fx:id="cardLaiLo" styleClass="stat-card card-green" alignment="CENTER" spacing="5" prefWidth="200">
+            <Label text="📈" style="-fx-font-size: 24px;"/>
+            <Label text="LÃI/LỖ" style="-fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label fx:id="lblLaiLo" text="0 VNĐ" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="5" prefWidth="200">
+            <Label text="📊" style="-fx-font-size: 24px;"/>
+            <Label text="TỶ LỆ LỢI NHUẬN" style="-fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label fx:id="lblTyLe" text="0%" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Biểu đồ -->
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+            <Label text="📈 Lợi nhuận theo tháng" styleClass="chart-title"/>
+            <BarChart fx:id="chartThang" VBox.vgrow="ALWAYS">
+                <xAxis><CategoryAxis/></xAxis>
+                <yAxis><NumberAxis/></yAxis>
+            </BarChart>
+        </VBox>
+        <VBox styleClass="chart-container" prefWidth="380">
+            <Label text="🥧 Lợi nhuận theo sản phẩm" styleClass="chart-title"/>
+            <PieChart fx:id="chartSanPham" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </HBox>
+</VBox>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.DashboardController"
+      spacing="20" alignment="TOP_CENTER" styleClass="content-page">
+    <padding><Insets top="30" right="30" bottom="30" left="30"/></padding>
+    
+    <Label text="TỔNG QUAN HỆ THỐNG" styleClass="page-title"/>
+    
+    <!-- Cards thống kê -->
+    <HBox spacing="20" alignment="CENTER">
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="5">
+            <Label fx:id="lblTongSP" text="0" styleClass="stat-number"/>
+            <Label text="Sản phẩm" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="5">
+            <Label fx:id="lblTongKH" text="0" styleClass="stat-number"/>
+            <Label text="Khách hàng" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card card-orange" alignment="CENTER" spacing="5">
+            <Label fx:id="lblTongDH" text="0" styleClass="stat-number"/>
+            <Label text="Đơn hàng" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="5">
+            <Label fx:id="lblDoanhThu" text="0 VNĐ" styleClass="stat-number-small"/>
+            <Label text="Doanh thu" styleClass="stat-label"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Charts -->
+    <HBox spacing="20" HBox.hgrow="ALWAYS">
+        <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+            <Label text="Sản phẩm theo loại" styleClass="chart-title"/>
+            <PieChart fx:id="chartLoai" prefHeight="250"/>
+        </VBox>
+        <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+            <Label text="Sản phẩm theo tỉnh" styleClass="chart-title"/>
+            <BarChart fx:id="chartTinh" prefHeight="250">
+                <xAxis><CategoryAxis label="Tỉnh"/></xAxis>
+                <yAxis><NumberAxis label="Số lượng"/></yAxis>
+            </BarChart>
+        </VBox>
+    </HBox>
+</VBox>

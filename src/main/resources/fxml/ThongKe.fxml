@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.mekongfarm.controller.ThongKeController"
+            fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;">
+    <VBox spacing="18" styleClass="content-page">
+        <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+        
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <Label text="📊 THỐNG KÊ BÁO CÁO" styleClass="page-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Năm:"/>
+            <ComboBox fx:id="cboNam" prefWidth="100"/>
+            <Button text="📊 Xem thống kê" onAction="#xemThongKe" styleClass="btn-primary"/>
+        </HBox>
+        
+        <!-- Thống kê tổng quan -->
+        <HBox spacing="15" alignment="CENTER">
+            <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="160">
+                <Label text="📦" style="-fx-font-size: 22px;"/>
+                <Label fx:id="lblTongSP" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+                <Label text="Sản phẩm" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+            </VBox>
+            <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="160">
+                <Label text="👥" style="-fx-font-size: 22px;"/>
+                <Label fx:id="lblTongKH" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+                <Label text="Khách hàng" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+            </VBox>
+            <VBox styleClass="stat-card card-orange" alignment="CENTER" spacing="3" prefWidth="160">
+                <Label text="🛒" style="-fx-font-size: 22px;"/>
+                <Label fx:id="lblTongDH" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #c2410c;"/>
+                <Label text="Đơn hàng" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+            </VBox>
+            <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="180">
+                <Label text="💰" style="-fx-font-size: 22px;"/>
+                <Label fx:id="lblDoanhThu" text="0 VNĐ" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+                <Label text="Tổng doanh thu" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+            </VBox>
+        </HBox>
+        
+        <!-- Biểu đồ hàng 1 -->
+        <HBox spacing="20">
+            <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                <Label text="📈 Doanh thu theo tháng" styleClass="chart-title"/>
+                <BarChart fx:id="chartDoanhThu" prefHeight="220">
+                    <xAxis><CategoryAxis/></xAxis>
+                    <yAxis><NumberAxis/></yAxis>
+                </BarChart>
+            </VBox>
+            <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                <Label text="🏆 Top sản phẩm bán chạy" styleClass="chart-title"/>
+                <BarChart fx:id="chartTopSP" prefHeight="220">
+                    <xAxis><CategoryAxis/></xAxis>
+                    <yAxis><NumberAxis/></yAxis>
+                </BarChart>
+            </VBox>
+        </HBox>
+        
+        <!-- Biểu đồ hàng 2 -->
+        <HBox spacing="20">
+            <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                <Label text="📊 Sản phẩm theo loại" styleClass="chart-title"/>
+                <PieChart fx:id="chartLoai" prefHeight="200"/>
+            </VBox>
+            <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                <Label text="🗺️ Sản phẩm theo tỉnh ĐBSCL" styleClass="chart-title"/>
+                <BarChart fx:id="chartTinh" prefHeight="200">
+                    <xAxis><CategoryAxis/></xAxis>
+                    <yAxis><NumberAxis/></yAxis>
+                </BarChart>
+            </VBox>
+        </HBox>
+        
+        <!-- Export buttons -->
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="📄 Xuất PDF" onAction="#xuatPDF" styleClass="btn-export"/>
+            <Button text="📊 Xuất Excel" onAction="#xuatExcel" styleClass="btn-export"/>
+        </HBox>
+    </VBox>
+</ScrollPane>

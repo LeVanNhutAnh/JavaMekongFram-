@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.LichSuController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="📜 LỊCH SỬ HOẠT ĐỘNG" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblTongLog" text="0 hoạt động" style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="📋" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblTongHoatDong" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="Tổng hoạt động" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="➕" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblThemMoi" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Thêm mới" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-orange" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="✏️" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblCapNhat" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #c2410c;"/>
+            <Label text="Cập nhật" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="📅" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblHomNay" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label text="Hôm nay" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Filters -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 10; -fx-background-radius: 8;">
+        <ComboBox fx:id="cboLoai" promptText="📊 Lọc theo loại" prefWidth="180"/>
+        <DatePicker fx:id="dpTuNgay" promptText="Từ ngày"/>
+        <DatePicker fx:id="dpDenNgay" promptText="Đến ngày"/>
+        <TextField fx:id="txtTimKiem" promptText="🔍 Tìm kiếm..." prefWidth="200"/>
+        <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="📄 Xuất PDF" onAction="#xuatPDF" styleClass="btn-export"/>
+    </HBox>
+    
+    <!-- Log table -->
+    <TableView fx:id="tableLog" VBox.vgrow="ALWAYS" styleClass="data-table">
+        <columns>
+            <TableColumn text="Thời gian" prefWidth="160">
+                <cellValueFactory><PropertyValueFactory property="thoiGianFormat"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Người dùng" prefWidth="130">
+                <cellValueFactory><PropertyValueFactory property="tenNguoiDung"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Loại" prefWidth="110">
+                <cellValueFactory><PropertyValueFactory property="loaiHoatDong"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Mô tả" prefWidth="320">
+                <cellValueFactory><PropertyValueFactory property="moTa"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Bảng" prefWidth="100">
+                <cellValueFactory><PropertyValueFactory property="bangLienQuan"/></cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+</VBox>

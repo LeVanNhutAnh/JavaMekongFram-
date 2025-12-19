@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.CongNoController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="💰 QUẢN LÝ CÔNG NỢ" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblSoKhoan" text="0 khoản nợ" style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-orange" alignment="CENTER" spacing="3" prefWidth="180">
+            <Label text="💰" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblTongNo" text="0 VNĐ" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #c2410c;"/>
+            <Label text="Tổng công nợ" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox fx:id="cardQuaHan" styleClass="stat-card" alignment="CENTER" spacing="3" prefWidth="180"
+              style="-fx-background-color: #fee2e2;">
+            <Label text="⚠️" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblQuaHan" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #dc2626;"/>
+            <Label text="Khoản quá hạn" style="-fx-font-size: 12px; -fx-text-fill: #991b1b;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="180">
+            <Label text="✅" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblDaThanhToan" text="0 VNĐ" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Đã thanh toán" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="180">
+            <Label text="👥" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblSoKhachNo" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="Khách nợ" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Thanh công cụ -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 10; -fx-background-radius: 8;">
+        <ComboBox fx:id="cboFilter" prefWidth="200" promptText="📊 Lọc theo trạng thái"/>
+        <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="txtThanhToan" promptText="Số tiền thanh toán" prefWidth="160"/>
+        <Button text="💰 Thanh toán" onAction="#thanhToan" styleClass="btn-primary"/>
+        <Button text="📩 Nhắc nợ" onAction="#nhacNo" styleClass="btn-export"/>
+    </HBox>
+    
+    <!-- TabPane phân loại công nợ -->
+    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+        <!-- Tab Phải thu từ Khách hàng -->
+        <Tab text="📥 Phải thu (Khách hàng)">
+            <TableView fx:id="tableCongNo" styleClass="data-table">
+                <columns>
+                    <TableColumn fx:id="colKhachHang" text="Khách hàng" prefWidth="200"/>
+                    <TableColumn fx:id="colSoTien" text="Số tiền nợ" prefWidth="150"/>
+                    <TableColumn fx:id="colConNo" text="Còn nợ" prefWidth="150"/>
+                    <TableColumn fx:id="colHanTT" text="Hạn thanh toán" prefWidth="130"/>
+                    <TableColumn fx:id="colTrangThai" text="Trạng thái" prefWidth="150"/>
+                </columns>
+            </TableView>
+        </Tab>
+        
+        <!-- Tab Phải trả cho NCC -->
+        <Tab text="📤 Phải trả (Nhà cung cấp)">
+            <TableView fx:id="tablePhaiTra" styleClass="data-table">
+                <columns>
+                    <TableColumn text="Nhà cung cấp" prefWidth="200">
+                        <cellValueFactory><PropertyValueFactory property="tenNCC"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Số tiền" prefWidth="150">
+                        <cellValueFactory><PropertyValueFactory property="soTienFormat"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Còn nợ" prefWidth="150">
+                        <cellValueFactory><PropertyValueFactory property="conNoFormat"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Hạn trả" prefWidth="130">
+                        <cellValueFactory><PropertyValueFactory property="hanThanhToan"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Trạng thái" prefWidth="150">
+                        <cellValueFactory><PropertyValueFactory property="trangThai"/></cellValueFactory>
+                    </TableColumn>
+                </columns>
+            </TableView>
+        </Tab>
+    </TabPane>
+</VBox>

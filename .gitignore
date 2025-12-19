@@ -1,0 +1,18 @@
+# Build/IDE
+/target/
+/.idea/
+/*.iml
+
+# Database
+mekongfarm.db
+
+# Config with sensitive data
+# Note: You may want to add config.properties here to protect API keys
+# src/main/resources/config.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

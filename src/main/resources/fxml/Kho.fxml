@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.KhoController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="🏪 QUẢN LÝ KHO HÀNG" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblTongKho" text="0 kho" style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="🏪" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblTongKhoHang" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="Tổng kho" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="✅" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblKhoHoatDong" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Đang hoạt động" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="180">
+            <Label text="📦" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblTongSucChua" text="0 kg" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label text="Tổng sức chứa" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Thanh công cụ -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 10; -fx-background-radius: 8;">
+        <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ Thêm kho" onAction="#themMoi" styleClass="btn-primary"/>
+    </HBox>
+    
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Bảng kho -->
+        <TableView fx:id="tableKho" HBox.hgrow="ALWAYS" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="colTen" text="Tên kho" prefWidth="180"/>
+                <TableColumn fx:id="colDiaChi" text="Địa chỉ" prefWidth="220"/>
+                <TableColumn fx:id="colNguoiQL" text="Người quản lý" prefWidth="150"/>
+                <TableColumn fx:id="colSucChua" text="Sức chứa (kg)" prefWidth="120"/>
+                <TableColumn fx:id="colTrangThai" text="Trạng thái" prefWidth="110"/>
+            </columns>
+        </TableView>
+        
+        <!-- Form -->
+        <VBox spacing="10" minWidth="280" styleClass="form-pane">
+            <padding><Insets topRightBottomLeft="15"/></padding>
+            
+            <Label text="📝 THÔNG TIN KHO" style="-fx-font-weight: bold;"/>
+            
+            <Label text="Tên kho:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="txtTen" promptText="VD: Kho Cần Thơ"/>
+            
+            <Label text="Địa chỉ:"/>
+            <TextField fx:id="txtDiaChi" promptText="Địa chỉ kho hàng"/>
+            
+            <Label text="Người quản lý:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="txtNguoiQL" promptText="Tên người quản lý"/>
+            
+            <Label text="Điện thoại:"/>
+            <TextField fx:id="txtDienThoai" promptText="0901234567"/>
+            
+            <Label text="Sức chứa (kg):" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="txtSucChua" promptText="10000"/>
+            
+            <CheckBox fx:id="chkHoatDong" text="✅ Đang hoạt động" selected="true"/>
+            
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="💾 Lưu" onAction="#luu" styleClass="btn-primary"/>
+                <Button text="🗑️ Xóa" onAction="#xoa" styleClass="btn-icon-danger"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

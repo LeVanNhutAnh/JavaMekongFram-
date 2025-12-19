@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.GiaVungController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="🗺️ QUẢN LÝ GIÁ THEO VÙNG" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblTongGiaVung" text="0 thiết lập giá" style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Mô tả -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f0f9ff; -fx-padding: 12; -fx-background-radius: 8;">
+        <Label text="📍" style="-fx-font-size: 18px;"/>
+        <Label text="Đặt giá riêng cho từng sản phẩm theo từng tỉnh/thành vùng ĐBSCL" style="-fx-text-fill: #0369a1;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="180">
+            <Label text="💰" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblTongThietLap" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="Thiết lập giá" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="180">
+            <Label text="📦" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblSoSanPham" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Sản phẩm có giá vùng" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="180">
+            <Label text="🗺️" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblSoTinh" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label text="Tỉnh/thành" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Thanh công cụ -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 10; -fx-background-radius: 8;">
+        <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ Thêm giá vùng" onAction="#themMoi" styleClass="btn-primary"/>
+    </HBox>
+    
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Bảng giá -->
+        <TableView fx:id="tableGiaVung" HBox.hgrow="ALWAYS" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="colSanPham" text="Sản phẩm" prefWidth="220"/>
+                <TableColumn fx:id="colTinh" text="Tỉnh/Thành" prefWidth="160"/>
+                <TableColumn fx:id="colGia" text="Giá riêng" prefWidth="160"/>
+                <TableColumn fx:id="colNgay" text="Ngày áp dụng" prefWidth="130"/>
+            </columns>
+        </TableView>
+        
+        <!-- Form -->
+        <VBox spacing="10" minWidth="300" styleClass="form-pane">
+            <padding><Insets topRightBottomLeft="15"/></padding>
+            
+            <Label text="📝 THIẾT LẬP GIÁ VÙNG" style="-fx-font-weight: bold;"/>
+            
+            <Label text="Sản phẩm:" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="cboSanPham" prefWidth="280" promptText="Chọn sản phẩm"/>
+            
+            <Label text="Tỉnh/Thành:" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="cboTinh" prefWidth="280" promptText="Chọn tỉnh"/>
+            
+            <Label text="Giá riêng (VNĐ):" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="txtGia" promptText="50000"/>
+            
+            <Label text="Ngày áp dụng:"/>
+            <DatePicker fx:id="dpNgay" prefWidth="280"/>
+            
+            <Label text="Ghi chú:"/>
+            <TextArea fx:id="txtGhiChu" prefHeight="60" promptText="Ghi chú về giá vùng..."/>
+            
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="💾 Lưu" onAction="#luu" styleClass="btn-primary"/>
+                <Button text="🗑️ Xóa" onAction="#xoa" styleClass="btn-icon-danger"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

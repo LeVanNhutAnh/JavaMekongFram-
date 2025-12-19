@@ -1,0 +1,61 @@
+﻿apache-maven-3.9.5\bin\mvn
+.cmd : WARNING: A 
+restricted method in 
+java.lang.System has been 
+called
+At line:1 char:1
++ apache-maven-3.9.5\bin\m
+vn.cmd compile -q 2>&1 | 
+Out-File -FilePath b ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpe    cified: 
+(WARNING    : A 
+rest...has b    een 
+called:Strin    g) [], 
+RemoteExc    eption
+    + FullyQualified    
+ErrorId : Native    
+CommandError
+ 
+WARNING: 
+java.lang.System::load 
+has been called by org.fus
+esource.jansi.internal.Jan
+siLoader in an unnamed 
+module (file:/D:/MekongFra
+m/apache-maven-3.9.5/lib/j
+ansi-2.4.0.jar)
+WARNING: Use --enable-nati
+ve-access=ALL-UNNAMED to 
+avoid a warning for 
+callers in this module
+WARNING: Restricted 
+methods will be blocked 
+in a future release 
+unless native access is 
+enabled
+
+WARNING: A terminally 
+deprecated method in 
+sun.misc.Unsafe has been 
+called
+WARNING: sun.misc.Unsafe::
+objectFieldOffset has 
+been called by com.google.
+common.util.concurrent.Abs
+tractFuture$UnsafeAtomicHe
+lper (file:/D:/MekongFram/
+apache-maven-3.9.5/lib/gua
+va-32.0.1-jre.jar)
+WARNING: Please consider 
+reporting this to the 
+maintainers of class com.g
+oogle.common.util.concurre
+nt.AbstractFuture$UnsafeAt
+omicHelper
+WARNING: sun.misc.Unsafe::
+objectFieldOffset will be 
+removed in a future 
+release

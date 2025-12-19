@@ -1,0 +1,298 @@
+/* ===================================
+   MEKONG FARM - DARK THEME
+   Premium dark mode with glassmorphism
+   =================================== */
+
+/* ===== Root Dark Variables ===== */
+.root-dark {
+    -fx-base: #0f172a;
+    -fx-background: #0f172a;
+    -fx-control-inner-background: #1e293b;
+    -fx-text-fill: #e2e8f0;
+    -fx-accent: #22c55e;
+    -fx-focus-color: #22c55e;
+}
+
+/* ===== Login Dark ===== */
+.root-dark .login-container {
+    -fx-background-color: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e293b 100%);
+}
+
+.root-dark .login-box {
+    -fx-background-color: rgba(30, 41, 59, 0.95);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 50, 0, 0, 15);
+}
+
+.root-dark .login-title {
+    -fx-text-fill: #4ade80;
+}
+
+.root-dark .login-subtitle {
+    -fx-text-fill: #94a3b8;
+}
+
+.root-dark .form-label {
+    -fx-text-fill: #cbd5e1;
+}
+
+.root-dark .form-input {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-text-fill: #e2e8f0;
+}
+
+.root-dark .form-input:focused {
+    -fx-background-color: #0f172a;
+    -fx-border-color: #22c55e;
+}
+
+/* ===== Main Container Dark ===== */
+.root-dark .main-container {
+    -fx-background-color: #0f172a;
+}
+
+.root-dark .content-area,
+.root-dark .content-page {
+    -fx-background-color: #0f172a;
+}
+
+/* ===== Sidebar Dark ===== */
+.root-dark .sidebar {
+    -fx-background-color: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+}
+
+.root-dark .sidebar-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== Page Title Dark ===== */
+.root-dark .page-title {
+    -fx-text-fill: #f1f5f9;
+}
+
+/* ===== Stat Cards Dark - Preserved Gradients ===== */
+.root-dark .stat-card {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0, 0, 6);
+}
+
+/* ===== Chart Container Dark ===== */
+.root-dark .chart-container {
+    -fx-background-color: #1e293b;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 4);
+}
+
+.root-dark .chart-title {
+    -fx-text-fill: #e2e8f0;
+}
+
+.root-dark .chart-legend-item-text {
+    -fx-text-fill: #cbd5e1;
+}
+
+/* ===== Tables Dark ===== */
+.root-dark .data-table {
+    -fx-background-color: #1e293b;
+}
+
+.root-dark .data-table .column-header,
+.root-dark .data-table .column-header-background {
+    -fx-background-color: #0f172a;
+}
+
+.root-dark .data-table .column-header .label {
+    -fx-text-fill: #94a3b8;
+}
+
+.root-dark .data-table .table-row-cell {
+    -fx-background-color: #1e293b;
+    -fx-border-color: transparent transparent #334155 transparent;
+}
+
+.root-dark .data-table .table-row-cell:odd {
+    -fx-background-color: #162236;
+}
+
+.root-dark .data-table .table-row-cell:hover {
+    -fx-background-color: #1e3a2f;
+}
+
+.root-dark .data-table .table-row-cell:selected {
+    -fx-background-color: #14532d;
+}
+
+.root-dark .data-table .table-cell {
+    -fx-text-fill: #e2e8f0;
+}
+
+/* ===== Forms Dark ===== */
+.root-dark .form-pane {
+    -fx-background-color: #1e293b;
+}
+
+.root-dark .form-pane>.title {
+    -fx-background-color: linear-gradient(to right, #14532d, #1e3a2f);
+    -fx-text-fill: #86efac;
+}
+
+/* ===== Buttons Dark ===== */
+.root-dark .btn-secondary {
+    -fx-background-color: #334155;
+    -fx-text-fill: #e2e8f0;
+    -fx-border-color: #475569;
+}
+
+.root-dark .btn-secondary:hover {
+    -fx-background-color: #475569;
+}
+
+.root-dark .btn-icon {
+    -fx-background-color: #1e3a5f;
+    -fx-text-fill: #60a5fa;
+}
+
+.root-dark .btn-icon:hover {
+    -fx-background-color: #1e4976;
+}
+
+.root-dark .btn-icon-danger {
+    -fx-background-color: #3f1f1f;
+    -fx-text-fill: #f87171;
+}
+
+.root-dark .btn-icon-danger:hover {
+    -fx-background-color: #5c2727;
+}
+
+/* ===== Result Card Dark ===== */
+.root-dark .result-card {
+    -fx-background-color: rgba(30, 41, 59, 0.95);
+}
+
+.root-dark .product-name {
+    -fx-text-fill: #4ade80;
+}
+
+.root-dark .info-label {
+    -fx-text-fill: #94a3b8;
+}
+
+/* ===== Chat Dark ===== */
+.root-dark .chat-scroll,
+.root-dark .chat-container {
+    -fx-background-color: #0f172a;
+    -fx-background: #0f172a;
+}
+
+.root-dark .chat-bot {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #e2e8f0;
+}
+
+.root-dark .chat-input {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-text-fill: #e2e8f0;
+}
+
+/* ===== Upload Box Dark ===== */
+.root-dark .upload-box {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #475569;
+}
+
+.root-dark .upload-box:hover {
+    -fx-background-color: #1e3a2f;
+    -fx-border-color: #4ade80;
+}
+
+/* ===== Result Box Dark ===== */
+.root-dark .result-box {
+    -fx-background-color: #1e293b;
+}
+
+.root-dark .result-area {
+    -fx-background-color: #0f172a;
+    -fx-text-fill: #e2e8f0;
+}
+
+/* ===== ComboBox Dark ===== */
+.root-dark .combo-box {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+}
+
+.root-dark .combo-box .list-cell {
+    -fx-text-fill: #e2e8f0;
+}
+
+.root-dark .combo-box-popup .list-view {
+    -fx-background-color: #1e293b;
+}
+
+.root-dark .combo-box-popup .list-cell {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #e2e8f0;
+}
+
+.root-dark .combo-box-popup .list-cell:hover {
+    -fx-background-color: #334155;
+}
+
+/* ===== Tab Pane Dark ===== */
+.root-dark .tab-pane .tab-header-area {
+    -fx-background-color: #0f172a;
+}
+
+.root-dark .tab-pane .tab {
+    -fx-background-color: transparent;
+}
+
+.root-dark .tab-pane .tab:selected {
+    -fx-background-color: #1e293b;
+}
+
+.root-dark .tab-pane .tab-label {
+    -fx-text-fill: #94a3b8;
+}
+
+.root-dark .tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #e2e8f0;
+}
+
+/* ===== ScrollBar Dark ===== */
+.root-dark .scroll-bar .thumb {
+    -fx-background-color: #475569;
+}
+
+.root-dark .scroll-bar .thumb:hover {
+    -fx-background-color: #64748b;
+}
+
+/* ===== Tooltip Dark ===== */
+.root-dark .tooltip {
+    -fx-background-color: #334155;
+    -fx-text-fill: #e2e8f0;
+}
+
+/* ===== Labels Dark ===== */
+.root-dark .label {
+    -fx-text-fill: #e2e8f0;
+}
+
+/* ===== Text Fields/Areas Dark ===== */
+.root-dark .text-field,
+.root-dark .text-area {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #e2e8f0;
+    -fx-border-color: #334155;
+}
+
+.root-dark .text-field:focused,
+.root-dark .text-area:focused {
+    -fx-border-color: #22c55e;
+}
+
+/* ===== Progress Bar Dark ===== */
+.root-dark .progress-bar .track {
+    -fx-background-color: #334155;
+}

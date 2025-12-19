@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.mekongfarm.controller.CaiDatController"
+            fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;">
+    <VBox spacing="20" styleClass="content-page">
+        <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+        
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <Label text="⚙️ CÀI ĐẶT HỆ THỐNG" styleClass="page-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="v1.0.0" style="-fx-font-size: 12px; -fx-text-fill: #64748b;"/>
+        </HBox>
+        
+        <!-- Giao diện -->
+        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="🎨" style="-fx-font-size: 20px;"/>
+                <Label text="GIAO DIỆN" style="-fx-font-weight: bold; -fx-font-size: 15px;"/>
+            </HBox>
+            
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <Label text="Chế độ tối (Dark Mode):" prefWidth="200"/>
+                <ToggleButton fx:id="btnDarkMode" text="🌙 Tắt" onAction="#toggleDarkMode" prefWidth="100"/>
+                <Label text="Chuyển đổi giao diện sáng/tối" style="-fx-text-fill: #64748b;"/>
+            </HBox>
+            
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <Label text="Cỡ chữ:" prefWidth="200"/>
+                <ComboBox fx:id="cboFontSize" prefWidth="150" promptText="Mặc định"/>
+            </HBox>
+        </VBox>
+        
+        <!-- Sao lưu & Khôi phục -->
+        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="💾" style="-fx-font-size: 20px;"/>
+                <Label text="SAO LƯU &amp; KHÔI PHỤC" style="-fx-font-weight: bold; -fx-font-size: 15px;"/>
+            </HBox>
+            
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Button text="📥 Sao lưu Database" onAction="#saoLuuDB" styleClass="btn-primary"/>
+                <Button text="📤 Khôi phục Database" onAction="#khoiPhucDB" styleClass="btn-secondary"/>
+                <Button text="📁 Mở thư mục backup" onAction="#moThuMucBackup" styleClass="btn-secondary"/>
+            </HBox>
+            
+            <Label text="📋 Danh sách backup gần đây:" style="-fx-font-weight: bold;"/>
+            <ListView fx:id="listBackup" prefHeight="120" style="-fx-background-radius: 6;"/>
+        </VBox>
+        
+        <!-- Giá vùng -->
+        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="🗺️" style="-fx-font-size: 20px;"/>
+                <Label text="GIÁ VÙNG" style="-fx-font-weight: bold; -fx-font-size: 15px;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="📋 Quản lý giá vùng" onAction="#moGiaVung" styleClass="btn-primary"/>
+            </HBox>
+            <Label text="Quản lý giá sản phẩm theo từng vùng miền ĐBSCL" style="-fx-text-fill: #64748b;"/>
+        </VBox>
+        
+        <!-- Thông tin hệ thống -->
+        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="ℹ️" style="-fx-font-size: 20px;"/>
+                <Label text="THÔNG TIN HỆ THỐNG" style="-fx-font-weight: bold; -fx-font-size: 15px;"/>
+            </HBox>
+            
+            <GridPane hgap="30" vgap="10">
+                <Label text="Phiên bản:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="1.0.0 - Premium Edition" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                
+                <Label text="Phát triển:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <Label text="Mekong Farm Team 🌾" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                
+                <Label text="Database:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <Label fx:id="lblDbPath" text="mekongfarm.db" style="-fx-text-fill: #0369a1;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                
+                <Label text="Java Version:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <Label fx:id="lblJavaVersion" text="" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            </GridPane>
+        </VBox>
+        
+        <!-- Hỗ trợ -->
+        <VBox spacing="15" style="-fx-background-color: #f0f9ff; -fx-padding: 20; -fx-background-radius: 10;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="💡" style="-fx-font-size: 20px;"/>
+                <Label text="HỖ TRỢ" style="-fx-font-weight: bold; -fx-font-size: 15px;"/>
+            </HBox>
+            
+            <Label text="Liên hệ hỗ trợ: support@mekongfarm.vn" style="-fx-text-fill: #0369a1;"/>
+            <Label text="Hotline: 1900 xxxx" style="-fx-text-fill: #0369a1;"/>
+        </VBox>
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.mekongfarm.controller.QuanLyTruyXuatController"
+            prefHeight="800.0" prefWidth="1200.0" styleClass="root"
+            stylesheets="@../css/styles.css">
+
+    <!-- Header -->
+    <top>
+        <VBox styleClass="header-container" spacing="10">
+            <padding>
+                <Insets top="20" right="30" bottom="20" left="30"/>
+            </padding>
+            <Label text="📦 QUẢN LÝ TRUY XUẤT NGUỒN GỐC" styleClass="page-title">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+            <Label text="Quản lý thông tin truy xuất nguồn gốc sản phẩm" styleClass="page-subtitle"/>
+        </VBox>
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="20" styleClass="content-container">
+            <padding>
+                <Insets top="20" right="30" bottom="20" left="30"/>
+            </padding>
+
+            <!-- Toolbar -->
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <TextField fx:id="txtTimKiem" promptText="🔍 Tìm theo số lô hoặc nông dân..." 
+                          prefWidth="300" styleClass="search-field"/>
+                <Button text="🔍 Tìm kiếm" onAction="#timKiem" styleClass="btn-primary"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="➕ Thêm mới" onAction="#moFormThem" styleClass="btn-success"/>
+                <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+            </HBox>
+
+            <!-- Table -->
+            <TableView fx:id="tableTruyXuat" VBox.vgrow="ALWAYS" styleClass="data-table">
+                <columns>
+                    <TableColumn fx:id="colMa" text="Mã" prefWidth="60"/>
+                    <TableColumn fx:id="colSanPham" text="Sản phẩm" prefWidth="150"/>
+                    <TableColumn fx:id="colSoLo" text="Số lô" prefWidth="120"/>
+                    <TableColumn fx:id="colNgayThuHoach" text="Ngày thu hoạch" prefWidth="120"/>
+                    <TableColumn fx:id="colDiaChi" text="Địa chỉ sản xuất" prefWidth="200"/>
+                    <TableColumn fx:id="colNongDan" text="Nông dân/Cơ sở" prefWidth="150"/>
+                    <TableColumn fx:id="colChungNhan" text="Chứng nhận" prefWidth="130"/>
+                    <TableColumn fx:id="colHanhDong" text="Hành động" prefWidth="150">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="dummy"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                </columns>
+                <placeholder>
+                    <Label text="Chưa có dữ liệu truy xuất" styleClass="placeholder-text"/>
+                </placeholder>
+            </TableView>
+
+            <!-- Stats -->
+            <HBox spacing="20" alignment="CENTER_LEFT" styleClass="stats-container">
+                <padding>
+                    <Insets top="10" bottom="10"/>
+                </padding>
+                <Label text="📊 Tổng số records:" styleClass="stat-label"/>
+                <Label fx:id="lblTongSo" text="0" styleClass="stat-value"/>
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>

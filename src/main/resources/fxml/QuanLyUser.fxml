@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.QuanLyUserController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="👤 QUẢN LÝ NGƯỜI DÙNG" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblTongUser" text="0 người dùng" style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="👥" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblTongNguoiDung" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="Tổng người dùng" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="👑" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblAdmin" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label text="Quản trị viên" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="✅" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblHoatDong" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Đang hoạt động" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Toolbar -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 10; -fx-background-radius: 8;">
+        <TextField fx:id="txtTimKiem" promptText="🔍 Tìm kiếm người dùng..." prefWidth="250" style="-fx-pref-height: 35px;"/>
+        <ComboBox fx:id="cboVaiTro" promptText="📋 Lọc theo vai trò" prefWidth="160"/>
+        <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ Thêm người dùng" onAction="#moFormThem" styleClass="btn-primary"/>
+    </HBox>
+    
+    <!-- Table -->
+    <TableView fx:id="tableUser" VBox.vgrow="ALWAYS" styleClass="data-table">
+        <columns>
+            <TableColumn text="ID" prefWidth="50">
+                <cellValueFactory><PropertyValueFactory property="maNguoiDung"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Tên đăng nhập" prefWidth="160">
+                <cellValueFactory><PropertyValueFactory property="tenDangNhap"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Họ tên" prefWidth="200">
+                <cellValueFactory><PropertyValueFactory property="hoTen"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Vai trò" prefWidth="130">
+                <cellValueFactory><PropertyValueFactory property="vaiTro"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Trạng thái" prefWidth="110">
+                <cellValueFactory><PropertyValueFactory property="trangThaiHienThi"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="colAction" text="Thao tác" prefWidth="150"/>
+        </columns>
+    </TableView>
+    
+    <!-- Form -->
+    <TitledPane fx:id="paneForm" text="📝 Thông tin người dùng" expanded="false" styleClass="form-pane">
+        <VBox spacing="15">
+            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+            <GridPane hgap="20" vgap="12">
+                <Label text="Tên đăng nhập:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="txtUsername" promptText="username" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                
+                <Label text="Mật khẩu:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                <PasswordField fx:id="txtPassword" promptText="••••••" prefWidth="200" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+                
+                <Label text="Họ tên:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="txtHoTen" promptText="Nguyễn Văn A" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                
+                <Label text="Vai trò:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="cboVaiTroForm" prefWidth="200" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+            </GridPane>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="💾 Lưu người dùng" onAction="#luuUser" styleClass="btn-primary"/>
+                <Button text="❌ Hủy" onAction="#huyForm" styleClass="btn-secondary"/>
+            </HBox>
+        </VBox>
+    </TitledPane>
+</VBox>

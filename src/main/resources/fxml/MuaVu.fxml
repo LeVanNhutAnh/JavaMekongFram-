@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.MuaVuController"
+      spacing="15" styleClass="content-page">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="🌾 QUẢN LÝ MÙA VỤ" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblTongMuaVu" text="0 mùa vụ" style="-fx-font-size: 14px; -fx-text-fill: #64748b;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="🌱" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblDangDienRa" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Đang diễn ra" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="📅" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblSapToi" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="Sắp bắt đầu" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="✅" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblDaKetThuc" text="0" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label text="Đã kết thúc" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-orange" alignment="CENTER" spacing="3" prefWidth="180">
+            <Label text="📊" style="-fx-font-size: 22px;"/>
+            <Label fx:id="lblTongDuBao" text="0 kg" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #c2410c;"/>
+            <Label text="Tổng dự báo" style="-fx-font-size: 12px; -fx-text-fill: #374151;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Thanh công cụ -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f8fafc; -fx-padding: 10; -fx-background-radius: 8;">
+        <Button text="🔄 Làm mới" onAction="#lamMoi" styleClass="btn-secondary"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ Thêm mùa vụ" onAction="#themMoi" styleClass="btn-primary"/>
+    </HBox>
+    
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Bảng mùa vụ -->
+        <TableView fx:id="tableMuaVu" HBox.hgrow="ALWAYS" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="colTen" text="Tên mùa vụ" prefWidth="220"/>
+                <TableColumn fx:id="colBatDau" text="Ngày bắt đầu" prefWidth="120"/>
+                <TableColumn fx:id="colKetThuc" text="Ngày kết thúc" prefWidth="120"/>
+                <TableColumn fx:id="colTrangThai" text="Trạng thái" prefWidth="130"/>
+                <TableColumn fx:id="colDuBao" text="Dự báo (kg)" prefWidth="110"/>
+            </columns>
+        </TableView>
+        
+        <!-- Form -->
+        <VBox spacing="10" minWidth="280" styleClass="form-pane">
+            <padding><Insets topRightBottomLeft="15"/></padding>
+            
+            <Label text="📝 THÔNG TIN MÙA VỤ" style="-fx-font-weight: bold;"/>
+            
+            <Label text="Tên mùa vụ:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="txtTen" promptText="VD: Vụ Đông Xuân 2024"/>
+            
+            <Label text="Sản phẩm liên quan:"/>
+            <TextField fx:id="txtSanPham" promptText="VD: Lúa, Gạo"/>
+            
+            <Label text="Ngày bắt đầu:" style="-fx-font-weight: bold;"/>
+            <DatePicker fx:id="dpBatDau" prefWidth="250"/>
+            
+            <Label text="Ngày kết thúc:" style="-fx-font-weight: bold;"/>
+            <DatePicker fx:id="dpKetThuc" prefWidth="250"/>
+            
+            <Label text="Dự báo sản lượng (kg):" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="txtDuBao" promptText="1000"/>
+            
+            <Label text="Mô tả:"/>
+            <TextArea fx:id="txtMoTa" prefHeight="60" promptText="Mô tả về mùa vụ..."/>
+            
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="💾 Lưu" onAction="#luu" styleClass="btn-primary"/>
+                <Button text="🗑️ Xóa" onAction="#xoa" styleClass="btn-icon-danger"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

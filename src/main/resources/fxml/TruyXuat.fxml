@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mekongfarm.controller.TruyXuatController"
+      spacing="20" styleClass="content-page" alignment="TOP_CENTER">
+    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+    
+    <!-- Header -->
+    <VBox alignment="CENTER" spacing="5">
+        <Label text="🔍 TRUY XUẤT NGUỒN GỐC" styleClass="page-title"/>
+        <Label text="Nhập mã sản phẩm hoặc số lô để xem thông tin nguồn gốc sản phẩm" 
+               style="-fx-text-fill: #64748b; -fx-font-size: 13px;"/>
+    </VBox>
+    
+    <!-- Search box -->
+    <HBox spacing="15" alignment="CENTER" style="-fx-background-color: #f0f9ff; -fx-padding: 20; -fx-background-radius: 12;">
+        <Label text="🔎" style="-fx-font-size: 24px;"/>
+        <TextField fx:id="txtMaTraCuu" promptText="Nhập mã SP hoặc số lô..." prefWidth="350" 
+                   style="-fx-font-size: 15px; -fx-pref-height: 40px; -fx-background-radius: 8;"/>
+        <Button text="🔍 Tra cứu" onAction="#traCuu" styleClass="btn-primary" style="-fx-pref-height: 40px;"/>
+    </HBox>
+    
+    <!-- Thống kê nhanh -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="stat-card card-green" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="📦" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblTongTraCuu" text="0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+            <Label text="Lần tra cứu hôm nay" style="-fx-font-size: 10px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-blue" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="✅" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblSPCoNguonGoc" text="0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1e40af;"/>
+            <Label text="SP có nguồn gốc" style="-fx-font-size: 10px; -fx-text-fill: #374151;"/>
+        </VBox>
+        <VBox styleClass="stat-card card-purple" alignment="CENTER" spacing="3" prefWidth="160">
+            <Label text="🏅" style="-fx-font-size: 20px;"/>
+            <Label fx:id="lblSPChungNhan" text="0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #7e22ce;"/>
+            <Label text="SP có chứng nhận" style="-fx-font-size: 10px; -fx-text-fill: #374151;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Kết quả tra cứu -->
+    <VBox fx:id="paneKetQua" visible="false" spacing="15" alignment="CENTER"
+          style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+        
+        <Label fx:id="lblTenSP" text="" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+        
+        <GridPane hgap="25" vgap="12" alignment="CENTER" style="-fx-padding: 10;">
+            <Label text="📦 Số lô:" style="-fx-font-weight: bold; -fx-text-fill: #374151;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="lblSoLo" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            
+            <Label text="🌾 Ngày thu hoạch:" style="-fx-font-weight: bold; -fx-text-fill: #374151;" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <Label fx:id="lblNgayThuHoach" style="-fx-font-size: 14px;" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+            
+            <Label text="📍 Địa chỉ sản xuất:" style="-fx-font-weight: bold; -fx-text-fill: #374151;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id="lblDiaChi" wrapText="true" prefWidth="200" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            
+            <Label text="👨‍🌾 Nông dân/Cơ sở:" style="-fx-font-weight: bold; -fx-text-fill: #374151;" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <Label fx:id="lblNongDan" style="-fx-font-size: 14px;" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+            
+            <Label text="🏅 Chứng nhận:" style="-fx-font-weight: bold; -fx-text-fill: #374151;" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label fx:id="lblChungNhan" style="-fx-font-size: 14px; -fx-text-fill: #16a34a; -fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            
+            <Label text="📅 Ngày sản xuất:" style="-fx-font-weight: bold; -fx-text-fill: #374151;" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <Label fx:id="lblNgaySX" style="-fx-font-size: 14px;" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+            
+            <Label text="⏰ Hạn sử dụng:" style="-fx-font-weight: bold; -fx-text-fill: #374151;" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Label fx:id="lblHanSD" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        </GridPane>
+        
+        <VBox alignment="CENTER" spacing="8" style="-fx-padding: 15; -fx-background-color: #f8fafc; -fx-background-radius: 8;">
+            <Label text="📱 Quét mã QR để xem thông tin" style="-fx-text-fill: #64748b;"/>
+            <ImageView fx:id="imgQR" fitHeight="160" fitWidth="160" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 2);"/>
+        </VBox>
+    </VBox>
+    
+    <Label fx:id="lblKhongTimThay" text="❌ Không tìm thấy thông tin truy xuất!" visible="false" 
+           style="-fx-font-size: 16px; -fx-text-fill: #dc2626; -fx-padding: 20;"/>
+</VBox>
