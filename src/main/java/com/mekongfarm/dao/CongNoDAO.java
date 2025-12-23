@@ -2,6 +2,7 @@ package com.mekongfarm.dao;
 
 import com.mekongfarm.model.CongNo;
 import com.mekongfarm.config.CauHinhDatabase;
+import com.mekongfarm.util.AppLogger;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -36,7 +37,7 @@ public class CongNoDAO {
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            System.err.println("Lỗi tạo bảng CongNo: " + e.getMessage());
+            AppLogger.error("Lỗi tạo bảng CongNo", e);
         }
     }
 
@@ -55,21 +56,38 @@ public class CongNoDAO {
             pstmt.setString(10, cn.getGhiChu());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Lỗi thêm công nợ: " + e.getMessage());
+            AppLogger.error("Lỗi thêm công nợ", e);
             return false;
         }
     }
 
     public boolean thanhToan(int maCongNo, double soTien) {
         String sql = "UPDATE CongNo SET daThanhToan = daThanhToan + ?, trangThai = CASE WHEN daThanhToan + ? >= soTien THEN 'Đã thanh toán' ELSE 'Đã thanh toán một phần' END WHERE maCongNo = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDouble(1, soTien);
-            pstmt.setDouble(2, soTien);
-            pstmt.setInt(3, maCongNo);
-            return pstmt.executeUpdate() > 0;
+        try {
+            conn.setAutoCommit(false);
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setDouble(1, soTien);
+                pstmt.setDouble(2, soTien);
+                pstmt.setInt(3, maCongNo);
+                boolean result = pstmt.executeUpdate() > 0;
+                conn.commit();
+                AppLogger.info("Thanh toán công nợ thành công: " + maCongNo);
+                return result;
+            }
         } catch (SQLException e) {
-            System.err.println("Lỗi thanh toán công nợ: " + e.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                AppLogger.error("Lỗi rollback thanh toán công nợ", rollbackEx);
+            }
+            AppLogger.error("Lỗi thanh toán công nợ", e);
             return false;
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                AppLogger.error("Lỗi reset autocommit", e);
+            }
         }
     }
 
@@ -86,7 +104,7 @@ public class CongNoDAO {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy danh sách công nợ: " + e.getMessage());
+            AppLogger.error("Lỗi lấy danh sách công nợ", e);
         }
         return list;
     }
@@ -104,7 +122,7 @@ public class CongNoDAO {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy công nợ chưa thanh toán: " + e.getMessage());
+            AppLogger.error("Lỗi lấy công nợ chưa thanh toán", e);
         }
         return list;
     }
@@ -123,7 +141,7 @@ public class CongNoDAO {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy công nợ quá hạn: " + e.getMessage());
+            AppLogger.error("Lỗi lấy công nợ quá hạn", e);
         }
         return list;
     }
@@ -136,7 +154,7 @@ public class CongNoDAO {
                 return rs.getDouble(1);
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi tính tổng công nợ: " + e.getMessage());
+            AppLogger.error("Lỗi tính tổng công nợ", e);
         }
         return 0;
     }
@@ -156,7 +174,7 @@ public class CongNoDAO {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy công nợ theo loại: " + e.getMessage());
+            AppLogger.error("Lỗi lấy công nợ theo loại", e);
         }
         return list;
     }
@@ -176,7 +194,7 @@ public class CongNoDAO {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy công nợ NCC: " + e.getMessage());
+            AppLogger.error("Lỗi lấy công nợ NCC", e);
         }
         return list;
     }
@@ -190,7 +208,7 @@ public class CongNoDAO {
                 return rs.getDouble(1);
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi tính tổng phải trả: " + e.getMessage());
+            AppLogger.error("Lỗi tính tổng phải trả", e);
         }
         return 0;
     }
@@ -207,11 +225,21 @@ public class CongNoDAO {
         cn.setMaDH(rs.getInt("maDH"));
         cn.setSoTien(rs.getDouble("soTien"));
         String ngayPhatSinh = rs.getString("ngayPhatSinh");
-        if (ngayPhatSinh != null)
+        if (ngayPhatSinh != null) {
+            // Handle both date formats: "2024-12-15" and "2024-12-15 10:45:00"
+            if (ngayPhatSinh.contains(" ")) {
+                ngayPhatSinh = ngayPhatSinh.split(" ")[0];
+            }
             cn.setNgayPhatSinh(LocalDate.parse(ngayPhatSinh));
+        }
         String hanThanhToan = rs.getString("hanThanhToan");
-        if (hanThanhToan != null)
+        if (hanThanhToan != null) {
+            // Handle both date formats: "2024-12-15" and "2024-12-15 10:45:00"
+            if (hanThanhToan.contains(" ")) {
+                hanThanhToan = hanThanhToan.split(" ")[0];
+            }
             cn.setHanThanhToan(LocalDate.parse(hanThanhToan));
+        }
         cn.setTrangThai(rs.getString("trangThai"));
         cn.setDaThanhToan(rs.getDouble("daThanhToan"));
         cn.setGhiChu(rs.getString("ghiChu"));

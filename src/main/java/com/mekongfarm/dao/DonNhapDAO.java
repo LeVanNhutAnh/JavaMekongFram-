@@ -3,6 +3,7 @@ package com.mekongfarm.dao;
 import com.mekongfarm.config.CauHinhDatabase;
 import com.mekongfarm.model.DonNhap;
 import com.mekongfarm.model.ChiTietDonNhap;
+import com.mekongfarm.util.AppLogger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -72,25 +73,45 @@ public class DonNhapDAO {
     // Thêm đơn nhập mới
     public int them(DonNhap dn) {
         String sql = "INSERT INTO don_nhap (ma_don, ma_ncc, ma_nguoi_dung, ngay_nhap, tong_tien, giam_gia, thanh_tien, trang_thai, ghi_chu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, dn.getMaDon());
-            ps.setInt(2, dn.getMaNCC());
-            ps.setInt(3, dn.getMaNguoiDung());
-            ps.setString(4, dn.getNgayNhap().toString());
-            ps.setDouble(5, dn.getTongTien());
-            ps.setDouble(6, dn.getGiamGia());
-            ps.setDouble(7, dn.getThanhTien());
-            ps.setString(8, dn.getTrangThai());
-            ps.setString(9, dn.getGhiChu());
-            ps.executeUpdate();
+        try {
+            conn.setAutoCommit(false);
+            
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, dn.getMaDon());
+                ps.setInt(2, dn.getMaNCC());
+                ps.setInt(3, dn.getMaNguoiDung());
+                ps.setString(4, dn.getNgayNhap().toString());
+                ps.setDouble(5, dn.getTongTien());
+                ps.setDouble(6, dn.getGiamGia());
+                ps.setDouble(7, dn.getThanhTien());
+                ps.setString(8, dn.getTrangThai());
+                ps.setString(9, dn.getGhiChu());
+                ps.executeUpdate();
 
-            // Lấy ID vừa insert
-            ResultSet rs = conn.createStatement().executeQuery("SELECT last_insert_rowid()");
-            if (rs.next()) {
-                return rs.getInt(1);
+                // Lấy ID vừa insert
+                ResultSet rs = conn.createStatement().executeQuery("SELECT last_insert_rowid()");
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    conn.commit();
+                    AppLogger.info("Thêm đơn nhập thành công: " + dn.getMaDon() + " (ID: " + id + ")");
+                    return id;
+                }
             }
+            
+            conn.rollback();
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                AppLogger.error("Lỗi rollback khi thêm đơn nhập: " + dn.getMaDon(), ex);
+            }
+            AppLogger.error("Lỗi thêm đơn nhập: " + dn.getMaDon(), e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                AppLogger.error("Lỗi reset autoCommit", e);
+            }
         }
         return -1;
     }
@@ -104,9 +125,13 @@ public class DonNhapDAO {
             ps.setInt(3, ct.getSoLuong());
             ps.setDouble(4, ct.getDonGia());
             ps.setDouble(5, ct.getThanhTien());
-            return ps.executeUpdate() > 0;
+            boolean result = ps.executeUpdate() > 0;
+            if (result) {
+                AppLogger.debug("Thêm chi tiết đơn nhập: DonNhap=" + ct.getMaDonNhap() + ", SP=" + ct.getMaSanPham());
+            }
+            return result;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppLogger.error("Lỗi thêm chi tiết đơn nhập: DonNhap=" + ct.getMaDonNhap(), e);
         }
         return false;
     }
@@ -117,9 +142,13 @@ public class DonNhapDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, trangThai);
             ps.setInt(2, maDonNhap);
-            return ps.executeUpdate() > 0;
+            boolean result = ps.executeUpdate() > 0;
+            if (result) {
+                AppLogger.info("Cập nhật trạng thái đơn nhập " + maDonNhap + " -> " + trangThai);
+            }
+            return result;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppLogger.error("Lỗi cập nhật trạng thái đơn nhập: " + maDonNhap, e);
         }
         return false;
     }
@@ -129,9 +158,13 @@ public class DonNhapDAO {
         String sql = "UPDATE don_nhap SET da_nhap_kho = 1, trang_thai = 'da_nhap' WHERE ma_don_nhap = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maDonNhap);
-            return ps.executeUpdate() > 0;
+            boolean result = ps.executeUpdate() > 0;
+            if (result) {
+                AppLogger.info("Đánh dấu đã nhập kho: " + maDonNhap);
+            }
+            return result;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppLogger.error("Lỗi đánh dấu nhập kho: " + maDonNhap, e);
         }
         return false;
     }
@@ -150,7 +183,7 @@ public class DonNhapDAO {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppLogger.error("Lỗi lấy danh sách đơn nhập", e);
         }
         return list;
     }
@@ -171,7 +204,7 @@ public class DonNhapDAO {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppLogger.error("Lỗi lấy đơn nhập theo NCC", e);
         }
         return list;
     }
@@ -199,7 +232,7 @@ public class DonNhapDAO {
                 list.add(ct);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppLogger.error("Lỗi lấy chi tiết đơn nhập", e);
         }
         return list;
     }
@@ -214,7 +247,7 @@ public class DonNhapDAO {
                 return rs.getDouble("tong");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppLogger.error("Lỗi tính tổng tiền nhập theo NCC", e);
         }
         return 0;
     }
@@ -222,17 +255,40 @@ public class DonNhapDAO {
     // Xóa đơn nhập
     public boolean xoa(int maDonNhap) {
         try {
+            conn.setAutoCommit(false);
+            
             // Xóa chi tiết trước
-            PreparedStatement ps1 = conn.prepareStatement("DELETE FROM chi_tiet_don_nhap WHERE ma_don_nhap = ?");
-            ps1.setInt(1, maDonNhap);
-            ps1.executeUpdate();
+            try (PreparedStatement ps1 = conn.prepareStatement("DELETE FROM chi_tiet_don_nhap WHERE ma_don_nhap = ?")) {
+                ps1.setInt(1, maDonNhap);
+                ps1.executeUpdate();
+            }
 
             // Xóa đơn
-            PreparedStatement ps2 = conn.prepareStatement("DELETE FROM don_nhap WHERE ma_don_nhap = ?");
-            ps2.setInt(1, maDonNhap);
-            return ps2.executeUpdate() > 0;
+            try (PreparedStatement ps2 = conn.prepareStatement("DELETE FROM don_nhap WHERE ma_don_nhap = ?")) {
+                ps2.setInt(1, maDonNhap);
+                boolean result = ps2.executeUpdate() > 0;
+                
+                if (result) {
+                    conn.commit();
+                    AppLogger.info("Xóa đơn nhập thành công: ID=" + maDonNhap);
+                    return true;
+                }
+            }
+            
+            conn.rollback();
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                AppLogger.error("Lỗi rollback khi xóa đơn nhập: " + maDonNhap, ex);
+            }
+            AppLogger.error("Lỗi xóa đơn nhập: " + maDonNhap, e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                AppLogger.error("Lỗi reset autoCommit", e);
+            }
         }
         return false;
     }

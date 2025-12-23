@@ -33,6 +33,18 @@ public class CongNoController implements Initializable {
     @FXML
     private TableColumn<CongNo, String> colTrangThai;
 
+    // Columns for tablePhaiTra
+    @FXML
+    private TableColumn<CongNo, String> colNCC;
+    @FXML
+    private TableColumn<CongNo, String> colSoTienNCC;
+    @FXML
+    private TableColumn<CongNo, String> colConNoNCC;
+    @FXML
+    private TableColumn<CongNo, LocalDate> colHanTraNCC;
+    @FXML
+    private TableColumn<CongNo, String> colTrangThaiNCC;
+
     @FXML
     private Label lblTongNo;
     @FXML
@@ -60,29 +72,68 @@ public class CongNoController implements Initializable {
     }
 
     private void setupTable() {
-        colKhachHang.setCellValueFactory(new PropertyValueFactory<>("tenKhachHang"));
-        colSoTien.setCellValueFactory(new PropertyValueFactory<>("soTienFormat"));
-        colConNo.setCellValueFactory(new PropertyValueFactory<>("conNoFormat"));
-        colHanTT.setCellValueFactory(new PropertyValueFactory<>("hanThanhToan"));
-        colTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        // Setup columns for tableCongNo
+        if (tableCongNo != null && colKhachHang != null)
+            colKhachHang.setCellValueFactory(new PropertyValueFactory<>("tenKhachHang"));
+        if (colSoTien != null)
+            colSoTien.setCellValueFactory(new PropertyValueFactory<>("soTienFormat"));
+        if (colConNo != null)
+            colConNo.setCellValueFactory(new PropertyValueFactory<>("conNoFormat"));
+        if (colHanTT != null)
+            colHanTT.setCellValueFactory(new PropertyValueFactory<>("hanThanhToan"));
+        if (colTrangThai != null)
+            colTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
 
-        // Highlight dòng quá hạn
-        tableCongNo.setRowFactory(tv -> new TableRow<CongNo>() {
-            @Override
-            protected void updateItem(CongNo item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setStyle("");
-                } else if (item.isQuaHan()) {
-                    setStyle("-fx-background-color: #ffcdd2;");
-                } else {
-                    setStyle("");
+        // Setup columns for tablePhaiTra (NCC)
+        if (colNCC != null)
+            colNCC.setCellValueFactory(new PropertyValueFactory<>("tenNCC"));
+        if (colSoTienNCC != null)
+            colSoTienNCC.setCellValueFactory(new PropertyValueFactory<>("soTienFormat"));
+        if (colConNoNCC != null)
+            colConNoNCC.setCellValueFactory(new PropertyValueFactory<>("conNoFormat"));
+        if (colHanTraNCC != null)
+            colHanTraNCC.setCellValueFactory(new PropertyValueFactory<>("hanThanhToan"));
+        if (colTrangThaiNCC != null)
+            colTrangThaiNCC.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+
+        // Highlight dòng quá hạn (an toàn khi TableView chưa được inject)
+        if (tableCongNo != null) {
+            tableCongNo.setRowFactory(tv -> new TableRow<CongNo>() {
+                @Override
+                protected void updateItem(CongNo item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setStyle("");
+                    } else if (item.isQuaHan()) {
+                        setStyle("-fx-background-color: #ffcdd2;");
+                    } else {
+                        setStyle("");
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        // Highlight for tablePhaiTra
+        if (tablePhaiTra != null) {
+            tablePhaiTra.setRowFactory(tv -> new TableRow<CongNo>() {
+                @Override
+                protected void updateItem(CongNo item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setStyle("");
+                    } else if (item.isQuaHan()) {
+                        setStyle("-fx-background-color: #ffcdd2;");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            });
+        }
     }
 
     private void setupFilter() {
+        if (cboFilter == null) return;
+        
         cboFilter.setItems(FXCollections.observableArrayList(
                 "Tất cả", "Chưa thanh toán", "Quá hạn", "Đã thanh toán"));
         cboFilter.setValue("Tất cả");
@@ -91,7 +142,9 @@ public class CongNoController implements Initializable {
 
     private void loadData() {
         // Load phải thu (khách hàng)
-        tableCongNo.setItems(FXCollections.observableArrayList(congNoDAO.layTheoLoai("phai_thu")));
+        if (tableCongNo != null) {
+            tableCongNo.setItems(FXCollections.observableArrayList(congNoDAO.layTheoLoai("phai_thu")));
+        }
         // Load phải trả (NCC)
         if (tablePhaiTra != null) {
             tablePhaiTra.setItems(FXCollections.observableArrayList(congNoDAO.layTheoLoai("phai_tra")));

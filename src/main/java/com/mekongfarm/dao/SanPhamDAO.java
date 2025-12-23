@@ -2,6 +2,7 @@ package com.mekongfarm.dao;
 
 import com.mekongfarm.config.CauHinhDatabase;
 import com.mekongfarm.model.SanPham;
+import com.mekongfarm.util.AppLogger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class SanPhamDAO {
                 list.add(mapSanPham(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi lấy danh sách sản phẩm: " + e.getMessage());
+            AppLogger.error("Lỗi lấy danh sách sản phẩm", e);
         }
         return list;
     }
@@ -90,9 +91,9 @@ public class SanPhamDAO {
         List<SanPham> list = new ArrayList<>();
         String sql = "SELECT sp.*, lsp.ten_loai, tt.ten_tinh " +
                 "FROM san_pham sp " +
-                "LEFT JOIN loai_san_pham lsp ON sp.ma_loại = lsp.ma_loai " +
+                "LEFT JOIN loai_san_pham lsp ON sp.ma_loai = lsp.ma_loai " +
                 "LEFT JOIN tinh_thanh tt ON sp.ma_tinh = tt.ma_tinh " +
-                "WHERE sp.trang_thai = 1 AND sp.ten_san_pham LIKE ? " +
+                "WHERE sp.trang_thai = 1 AND LOWER(sp.ten_san_pham) LIKE LOWER(?) " +
                 "ORDER BY sp.ten_san_pham";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, "%" + tuKhoa + "%");
@@ -101,7 +102,7 @@ public class SanPhamDAO {
                 list.add(mapSanPham(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi tìm kiếm sản phẩm: " + e.getMessage());
+            AppLogger.error("Lỗi tìm kiếm sản phẩm", e);
         }
         return list;
     }
@@ -124,7 +125,7 @@ public class SanPhamDAO {
                 list.add(mapSanPham(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi lọc sản phẩm: " + e.getMessage());
+            AppLogger.error("Lỗi lọc sản phẩm theo loại", e);
         }
         return list;
     }
@@ -159,42 +160,55 @@ public class SanPhamDAO {
         String sql = "INSERT INTO san_pham (ma_sp, ten_san_pham, ma_loai, ma_tinh, ma_ncc, don_gia, so_luong_ton, don_vi_tinh, mo_ta, hinh_anh) "
                 +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, sp.getMaSP());
-            pstmt.setString(2, sp.getTenSanPham());
-            pstmt.setInt(3, sp.getMaLoai());
-            pstmt.setInt(4, sp.getMaTinh());
-            if (sp.getMaNCC() > 0) {
-                pstmt.setInt(5, sp.getMaNCC());
-            } else {
-                pstmt.setNull(5, java.sql.Types.INTEGER);
-            }
-            pstmt.setDouble(6, sp.getDonGia());
-            pstmt.setInt(7, sp.getSoLuongTon());
-            pstmt.setString(8, sp.getDonViTinh());
-            pstmt.setString(9, sp.getMoTa());
-            pstmt.setString(10, sp.getHinhAnh());
-
-            System.out.println("DEBUG: Thêm SP - maSP=" + sp.getMaSP() + ", ten=" + sp.getTenSanPham() +
-                    ", maLoai=" + sp.getMaLoai() + ", maTinh=" + sp.getMaTinh());
-
-            int result = pstmt.executeUpdate();
-            if (result > 0) {
-                // Get last insert ID using SQLite function
-                try (Statement stmt = conn.createStatement();
-                        ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid()")) {
-                    if (rs.next()) {
-                        sp.setMaSanPham(rs.getInt(1));
-                    }
+        try {
+            conn.setAutoCommit(false);
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, sp.getMaSP());
+                pstmt.setString(2, sp.getTenSanPham());
+                pstmt.setInt(3, sp.getMaLoai());
+                pstmt.setInt(4, sp.getMaTinh());
+                if (sp.getMaNCC() > 0) {
+                    pstmt.setInt(5, sp.getMaNCC());
+                } else {
+                    pstmt.setNull(5, java.sql.Types.INTEGER);
                 }
-                System.out.println("DEBUG: Thêm SP thành công, ID=" + sp.getMaSanPham());
-                return true;
+                pstmt.setDouble(6, sp.getDonGia());
+                pstmt.setInt(7, sp.getSoLuongTon());
+                pstmt.setString(8, sp.getDonViTinh());
+                pstmt.setString(9, sp.getMoTa());
+                pstmt.setString(10, sp.getHinhAnh());
+
+                System.out.println("DEBUG: Thêm SP - maSP=" + sp.getMaSP() + ", ten=" + sp.getTenSanPham() +
+                        ", maLoai=" + sp.getMaLoai() + ", maTinh=" + sp.getMaTinh());
+
+                int result = pstmt.executeUpdate();
+                if (result > 0) {
+                    // Get last insert ID using SQLite function
+                    try (Statement stmt = conn.createStatement();
+                            ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid()")) {
+                        if (rs.next()) {
+                            sp.setMaSanPham(rs.getInt(1));
+                        }
+                    }
+                    conn.commit();
+                    AppLogger.info("Thêm sản phẩm thành công: " + sp.getMaSP() + " (ID: " + sp.getMaSanPham() + ")");
+                    return true;
+                }
             }
+            conn.rollback();
         } catch (SQLException e) {
-            System.err.println("Lỗi thêm sản phẩm: " + e.getMessage());
-            System.err.println("SQL State: " + e.getSQLState());
-            System.err.println("Error Code: " + e.getErrorCode());
-            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                AppLogger.error("Lỗi rollback khi thêm sản phẩm: " + sp.getMaSP(), ex);
+            }
+            AppLogger.error("Lỗi thêm sản phẩm: " + sp.getMaSP(), e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                AppLogger.error("Lỗi reset autoCommit", e);
+            }
         }
         return false;
     }
@@ -222,9 +236,13 @@ public class SanPhamDAO {
             pstmt.setString(8, sp.getMoTa());
             pstmt.setString(9, sp.getHinhAnh());
             pstmt.setInt(10, sp.getMaSanPham());
-            return pstmt.executeUpdate() > 0;
+            boolean result = pstmt.executeUpdate() > 0;
+            if (result) {
+                AppLogger.info("Cập nhật sản phẩm: " + sp.getMaSP());
+            }
+            return result;
         } catch (SQLException e) {
-            System.err.println("Lỗi cập nhật sản phẩm: " + e.getMessage());
+            AppLogger.error("Lỗi cập nhật sản phẩm: " + sp.getMaSP(), e);
         }
         return false;
     }
@@ -237,9 +255,13 @@ public class SanPhamDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, soLuongMoi);
             pstmt.setInt(2, maSanPham);
-            return pstmt.executeUpdate() > 0;
+            boolean result = pstmt.executeUpdate() > 0;
+            if (result) {
+                AppLogger.debug("Cập nhật số lượng SP #" + maSanPham + " = " + soLuongMoi);
+            }
+            return result;
         } catch (SQLException e) {
-            System.err.println("Lỗi cập nhật số lượng: " + e.getMessage());
+            AppLogger.error("Lỗi cập nhật số lượng SP #" + maSanPham, e);
         }
         return false;
     }
@@ -253,9 +275,16 @@ public class SanPhamDAO {
             pstmt.setInt(1, soLuongGiam);
             pstmt.setInt(2, maSanPham);
             pstmt.setInt(3, soLuongGiam);
-            return pstmt.executeUpdate() > 0;
+            int updated = pstmt.executeUpdate();
+            if (updated > 0) {
+                AppLogger.debug("Giảm tồn kho SP #" + maSanPham + " -" + soLuongGiam);
+                return true;
+            } else {
+                AppLogger.warning("Không đủ tồn kho để giảm SP #" + maSanPham + " (yêu cầu: " + soLuongGiam + ")");
+                return false;
+            }
         } catch (SQLException e) {
-            System.err.println("Lỗi giảm số lượng: " + e.getMessage());
+            AppLogger.error("Lỗi giảm số lượng SP #" + maSanPham, e);
         }
         return false;
     }
@@ -268,9 +297,13 @@ public class SanPhamDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, soLuongThem);
             pstmt.setInt(2, maSanPham);
-            return pstmt.executeUpdate() > 0;
+            boolean result = pstmt.executeUpdate() > 0;
+            if (result) {
+                AppLogger.debug("Tăng tồn kho SP #" + maSanPham + " +" + soLuongThem);
+            }
+            return result;
         } catch (SQLException e) {
-            System.err.println("Lỗi cập nhật tồn kho: " + e.getMessage());
+            AppLogger.error("Lỗi cập nhật tồn kho SP #" + maSanPham, e);
         }
         return false;
     }
@@ -282,9 +315,13 @@ public class SanPhamDAO {
         String sql = "UPDATE san_pham SET trang_thai = 0 WHERE ma_san_pham = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, maSanPham);
-            return pstmt.executeUpdate() > 0;
+            boolean result = pstmt.executeUpdate() > 0;
+            if (result) {
+                AppLogger.info("Xóa sản phẩm (soft delete): SP #" + maSanPham);
+            }
+            return result;
         } catch (SQLException e) {
-            System.err.println("Lỗi xóa sản phẩm: " + e.getMessage());
+            AppLogger.error("Lỗi xóa sản phẩm #" + maSanPham, e);
         }
         return false;
     }
@@ -318,9 +355,13 @@ public class SanPhamDAO {
         String sql = "UPDATE san_pham SET trang_thai = 1 WHERE ma_san_pham = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, maSanPham);
-            return pstmt.executeUpdate() > 0;
+            boolean result = pstmt.executeUpdate() > 0;
+            if (result) {
+                AppLogger.info("Khôi phục sản phẩm: SP #" + maSanPham);
+            }
+            return result;
         } catch (SQLException e) {
-            System.err.println("Lỗi khôi phục sản phẩm: " + e.getMessage());
+            AppLogger.error("Lỗi khôi phục sản phẩm #" + maSanPham, e);
         }
         return false;
     }

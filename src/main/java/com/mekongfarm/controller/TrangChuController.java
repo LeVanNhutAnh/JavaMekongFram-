@@ -33,22 +33,6 @@ public class TrangChuController {
     private BarChart<String, Number> chartTinh;
     @FXML
     private VBox boxThongBao, boxDonHangGanDay, boxTonKhoThap;
-    @FXML
-    private VBox boxTopBanChay, boxSapHetHan;
-    @FXML
-    private TextField txtTimKiemToanCuc;
-
-    // Menu buttons for permission control
-    @FXML
-    private Button btnSanPham, btnKhachHang, btnDonHang, btnTruyXuat;
-    @FXML
-    private Button btnNhaCungCap, btnDonNhap, btnKho;
-    @FXML
-    private Button btnThongKe, btnCongNo, btnLaiLo; // Changed btnBaoCao to btnThongKe
-    @FXML
-    private Button btnMuaVu, btnTroLyAI, btnQuanLyUser, btnLichSu;
-    @FXML
-    private Button btnQuanLyTruyXuat, btnGiaVung;
 
     private final ThongKeDAO thongKeDAO = new ThongKeDAO();
     private final CongNoDAO congNoDAO = new CongNoDAO();
@@ -67,55 +51,8 @@ public class TrangChuController {
             lblNgay.setText("📅 " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
 
-        // Áp dụng phân quyền
-        applyPermissions();
-
         taiDuLieuThongKe();
         taiThongTinBoSung();
-    }
-
-    /**
-     * Ẩn/hiện menu dựa trên vai trò người dùng
-     */
-    private void applyPermissions() {
-        VaiTro vaiTro = PhanQuyenUtil.getVaiTro();
-
-        // 1. Module Sản phẩm - chỉ Admin
-        setObscure(btnSanPham, vaiTro.coQuyenSanPham());
-
-        // 2. Module Đơn hàng/Khách hàng - Admin & Nhân viên
-        setObscure(btnDonHang, vaiTro.coQuyenDonHang());
-        setObscure(btnKhachHang, vaiTro.coQuyenDonHang());
-
-        // 3. Module KHO & ĐỐI TÁC - Admin & Nhân viên
-        boolean quyenKho = vaiTro.coQuyenQuanLy();
-        setObscure(btnNhaCungCap, quyenKho);
-        setObscure(btnDonNhap, quyenKho);
-        setObscure(btnKho, quyenKho);
-
-        // 4. Module TÀI CHÍNH - Admin & Kế toán
-        boolean quyenTaiChinh = vaiTro.coQuyenThongKe();
-        setObscure(btnCongNo, quyenTaiChinh);
-        setObscure(btnLaiLo, quyenTaiChinh);
-        setObscure(btnThongKe, vaiTro.coQuyenThongKe());
-
-        // 5. Module SẢN XUẤT
-        setObscure(btnQuanLyTruyXuat, vaiTro.coQuyenQuanLy());
-        setObscure(btnMuaVu, true);
-        setObscure(btnGiaVung, true);
-        setObscure(btnTruyXuat, true);
-        setObscure(btnTroLyAI, true);
-
-        // 6. Quản trị hệ thống - Chỉ Admin
-        setObscure(btnQuanLyUser, vaiTro.laAdmin());
-        setObscure(btnLichSu, vaiTro.laAdmin());
-    }
-
-    private void setObscure(javafx.scene.Node node, boolean visible) {
-        if (node != null) {
-            node.setVisible(visible);
-            node.setManaged(visible);
-        }
     }
 
     private void taiDuLieuThongKe() {
@@ -212,32 +149,6 @@ public class TrangChuController {
                         });
             }
         }
-
-        // Top sản phẩm bán chạy
-        if (boxTopBanChay != null) {
-            boxTopBanChay.getChildren().clear();
-            Map<String, Integer> topSP = thongKeDAO.topSanPhamBanChay(5);
-            if (topSP.isEmpty()) {
-                Label lbl = new Label("Chưa có dữ liệu");
-                lbl.setStyle("-fx-text-fill: #94a3b8; -fx-font-style: italic;");
-                boxTopBanChay.getChildren().add(lbl);
-            } else {
-                int rank = 1;
-                for (Map.Entry<String, Integer> entry : topSP.entrySet()) {
-                    Label lbl = new Label(rank++ + ". " + entry.getKey() + " (" + entry.getValue() + " đã bán)");
-                    lbl.setStyle("-fx-text-fill: #374151; -fx-font-size: 11px;");
-                    boxTopBanChay.getChildren().add(lbl);
-                }
-            }
-        }
-
-        // Sắp hết hạn (Giả lập kiểm tra an toàn)
-        if (boxSapHetHan != null) {
-            boxSapHetHan.getChildren().clear();
-            Label lbl = new Label("✅ Không có sản phẩm sắp hết hạn");
-            lbl.setStyle("-fx-text-fill: #16a34a; -fx-font-size: 11px;");
-            boxSapHetHan.getChildren().add(lbl);
-        }
     }
 
     @FXML
@@ -247,24 +158,18 @@ public class TrangChuController {
     }
 
     @FXML
-    private void xuatBaoCaoThang() {
-        try {
-            javafx.stage.FileChooser fc = new javafx.stage.FileChooser();
-            fc.setTitle("Lưu Báo Cáo Tháng");
-            fc.setInitialFileName(
-                    "bao_cao_thang_" + LocalDate.now().format(DateTimeFormatter.ofPattern("MM_yyyy")) + ".pdf");
-            fc.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("PDF", "*.pdf"));
-            java.io.File file = fc.showSaveDialog(contentArea.getScene().getWindow());
+    private void timKiemToanCuc() {
+        DialogUtil.showInfo("Tìm kiếm", "Chức năng tìm kiếm toàn cục đang được phát triển!");
+    }
 
-            if (file != null) {
-                com.mekongfarm.service.PDFExportService pdfService = new com.mekongfarm.service.PDFExportService();
-                pdfService.xuatBaoCaoThongKe(file);
-                hienThiThongBao("✅ Đã xuất báo cáo thành công!\nFile: " + file.getName());
-            }
-        } catch (Exception e) {
-            hienThiThongBao("❌ Lỗi xuất báo cáo: " + e.getMessage());
-            e.printStackTrace();
-        }
+    @FXML
+    private void xuatBaoCaoThang() {
+        DialogUtil.showInfo("Báo cáo", "Chức năng xuất báo cáo tháng đang được phát triển!");
+    }
+
+    @FXML
+    private void xuatExcelTongHop() {
+        DialogUtil.showInfo("Xuất Excel", "Chức năng xuất Excel tổng hợp đang được phát triển!");
     }
 
     @FXML
@@ -308,13 +213,11 @@ public class TrangChuController {
         taiNoiDung("/fxml/TruyXuat.fxml");
     }
 
-    @FXML
-    private void moQuanLyTruyXuat() {
+    @FXML    private void moQuanLyTruyXuat() {
         taiNoiDung("/fxml/QuanLyTruyXuat.fxml");
     }
 
-    @FXML
-    private void moTroLyAI() {
+    @FXML    private void moTroLyAI() {
         taiNoiDung("/fxml/TroLyAI.fxml");
     }
 
@@ -374,8 +277,33 @@ public class TrangChuController {
             contentArea.getChildren().clear();
             contentArea.getChildren().add(content);
         } catch (Exception e) {
-            hienThiThongBao("Không thể mở màn hình: " + e.getMessage());
+            // Ghi log chi tiết để dễ chẩn đoán
+            AppLogger.error("Lỗi mở màn hình: " + fxmlPath, e);
+            System.err.println("Lỗi tải FXML: " + fxmlPath);
+            System.err.println("Message: " + e);
+            e.printStackTrace(); // In stack trace đầy đủ
+            
+            // In caused by nếu có
+            Throwable cause = e.getCause();
+            while (cause != null) {
+                System.err.println("Caused by: " + cause.getMessage());
+                cause.printStackTrace();
+                cause = cause.getCause();
+            }
+            
+            // Hiển thị lỗi thân thiện kèm thông tin ngoại lệ
+            DialogUtil.showError("Lỗi", "Không thể mở màn hình: " + fxmlPath, "Chi tiết: " + e);
         }
+    }
+
+    @FXML
+    private void moThongBao() {
+        DialogUtil.showInfo("Thông báo", "Chức năng thông báo đang được phát triển!");
+    }
+
+    @FXML
+    private void moDoiMatKhau() {
+        DialogUtil.showInfo("Đổi mật khẩu", "Chức năng đổi mật khẩu đang được phát triển!");
     }
 
     @FXML
@@ -395,180 +323,5 @@ public class TrangChuController {
 
     private void hienThiThongBao(String msg) {
         DialogUtil.showSuccess("Thông báo", msg);
-    }
-
-    // ========== NEW ENHANCEMENT METHODS ==========
-
-    @FXML
-    private void moThongBao() {
-        // Show notification panel
-        var notifications = com.mekongfarm.service.NotificationService.getAll();
-        if (notifications.isEmpty()) {
-            DialogUtil.showInfo("Thông báo", "Không có thông báo mới");
-        } else {
-            StringBuilder sb = new StringBuilder();
-            int count = 0;
-            for (var n : notifications) {
-                if (count++ >= 10)
-                    break;
-                String icon = switch (n.type) {
-                    case SUCCESS -> "✅";
-                    case WARNING -> "⚠️";
-                    case ERROR -> "❌";
-                    default -> "ℹ️";
-                };
-                sb.append(icon).append(" ").append(n.title).append("\n");
-                sb.append("   ").append(n.message).append("\n\n");
-            }
-            DialogUtil.showInfo("🔔 Thông báo (" + notifications.size() + ")", sb.toString());
-            com.mekongfarm.service.NotificationService.markAllRead();
-        }
-    }
-
-    @FXML
-    private void moDoiMatKhau() {
-        // Password change dialog
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("🔑 Đổi mật khẩu");
-        dialog.setHeaderText("Nhập mật khẩu cũ và mật khẩu mới");
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
-
-        PasswordField txtMatKhauCu = new PasswordField();
-        PasswordField txtMatKhauMoi = new PasswordField();
-        PasswordField txtXacNhan = new PasswordField();
-
-        grid.add(new Label("Mật khẩu cũ:"), 0, 0);
-        grid.add(txtMatKhauCu, 1, 0);
-        grid.add(new Label("Mật khẩu mới:"), 0, 1);
-        grid.add(txtMatKhauMoi, 1, 1);
-        grid.add(new Label("Xác nhận:"), 0, 2);
-        grid.add(txtXacNhan, 1, 2);
-
-        dialog.getDialogPane().setContent(grid);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        java.util.Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            String mkCu = txtMatKhauCu.getText();
-            String mkMoi = txtMatKhauMoi.getText();
-            String xacNhan = txtXacNhan.getText();
-
-            if (mkMoi.isEmpty() || mkMoi.length() < 6) {
-                DialogUtil.showError("Lỗi", "Mật khẩu mới phải có ít nhất 6 ký tự!");
-                return;
-            }
-            if (!mkMoi.equals(xacNhan)) {
-                DialogUtil.showError("Lỗi", "Mật khẩu xác nhận không khớp!");
-                return;
-            }
-
-            // Verify old password and update
-            NguoiDung user = DangNhapController.nguoiDungHienTai;
-            if (user != null) {
-                NguoiDungDAO dao = new NguoiDungDAO();
-                String hashedOld = com.mekongfarm.service.PasswordService.hash(mkCu);
-                if (!hashedOld.equals(user.getMatKhau())) {
-                    DialogUtil.showError("Lỗi", "Mật khẩu cũ không đúng!");
-                    return;
-                }
-
-                boolean success = dao.doiMatKhau(user.getMaNguoiDung(), mkMoi);
-                if (success) {
-                    DialogUtil.showSuccess("Thành công", "Đổi mật khẩu thành công!");
-                    com.mekongfarm.service.LogService.logCapNhat("NguoiDung", user.getMaNguoiDung(),
-                            "User tự đổi mật khẩu");
-                } else {
-                    DialogUtil.showError("Lỗi", "Không thể đổi mật khẩu!");
-                }
-            }
-        }
-    }
-
-    @FXML
-    private void timKiemToanCuc() {
-        String keyword = txtTimKiemToanCuc.getText().trim();
-        if (keyword.isEmpty()) {
-            DialogUtil.showWarning("Tìm kiếm", "Vui lòng nhập từ khóa tìm kiếm!");
-            return;
-        }
-
-        // Search products using existing layTatCa and filter
-        StringBuilder result = new StringBuilder();
-
-        // Search products
-        List<SanPham> allProducts = sanPhamDAO.layTatCa();
-        List<SanPham> matchedProducts = allProducts.stream()
-                .filter(sp -> sp.getTenSanPham().toLowerCase().contains(keyword.toLowerCase()))
-                .limit(5)
-                .toList();
-
-        if (!matchedProducts.isEmpty()) {
-            result.append("📦 SẢN PHẨM (").append(matchedProducts.size()).append(" kết quả):\n");
-            for (SanPham sp : matchedProducts) {
-                result.append("  • ").append(sp.getTenSanPham()).append("\n");
-            }
-            result.append("\n");
-        }
-
-        // Search customers
-        KhachHangDAO khDAO = new KhachHangDAO();
-        List<KhachHang> allCustomers = khDAO.layTatCa();
-        List<KhachHang> matchedCustomers = allCustomers.stream()
-                .filter(kh -> kh.getHoTen().toLowerCase().contains(keyword.toLowerCase()))
-                .limit(5)
-                .toList();
-
-        if (!matchedCustomers.isEmpty()) {
-            result.append("👥 KHÁCH HÀNG (").append(matchedCustomers.size()).append(" kết quả):\n");
-            for (KhachHang kh : matchedCustomers) {
-                result.append("  • ").append(kh.getHoTen()).append("\n");
-            }
-            result.append("\n");
-        }
-
-        // Search orders
-        List<DonHang> allOrders = donHangDAO.layTatCa();
-        List<DonHang> matchedOrders = allOrders.stream()
-                .filter(dh -> String.valueOf(dh.getMaDH()).contains(keyword))
-                .limit(5)
-                .toList();
-
-        if (!matchedOrders.isEmpty()) {
-            result.append("🛒 ĐƠN HÀNG (").append(matchedOrders.size()).append(" kết quả):\n");
-            for (DonHang dh : matchedOrders) {
-                result.append("  • Đơn #").append(dh.getMaDH()).append("\n");
-            }
-        }
-
-        if (result.length() == 0) {
-            DialogUtil.showSuccess("Tìm kiếm", "Không tìm thấy kết quả cho: " + keyword);
-        } else {
-            DialogUtil.showSuccess("🔍 Kết quả tìm kiếm: " + keyword, result.toString());
-        }
-    }
-
-    @FXML
-    private void xuatExcelTongHop() {
-        try {
-            javafx.stage.FileChooser fc = new javafx.stage.FileChooser();
-            fc.setTitle("Lưu Báo Cáo Excel");
-            fc.setInitialFileName("bao_cao_tong_hop_" + LocalDate.now() + ".xlsx");
-            fc.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("Excel", "*.xlsx"));
-            java.io.File file = fc.showSaveDialog(contentArea.getScene().getWindow());
-
-            if (file != null) {
-                // Use PDF export as fallback since Excel may not have xuatBaoCaoTongHop
-                com.mekongfarm.service.PDFExportService pdfService = new com.mekongfarm.service.PDFExportService();
-                java.io.File pdfFile = new java.io.File(file.getAbsolutePath().replace(".xlsx", ".pdf"));
-                pdfService.xuatBaoCaoThongKe(pdfFile);
-                DialogUtil.showSuccess("Thành công", "Đã xuất báo cáo!\nFile: " + pdfFile.getName());
-            }
-        } catch (Exception e) {
-            DialogUtil.showError("Lỗi", "Không thể xuất báo cáo: " + e.getMessage());
-        }
     }
 }
