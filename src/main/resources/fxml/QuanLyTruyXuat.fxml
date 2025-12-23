@@ -52,11 +52,7 @@
                     <TableColumn fx:id="colDiaChi" text="Địa chỉ sản xuất" prefWidth="200"/>
                     <TableColumn fx:id="colNongDan" text="Nông dân/Cơ sở" prefWidth="150"/>
                     <TableColumn fx:id="colChungNhan" text="Chứng nhận" prefWidth="130"/>
-                    <TableColumn fx:id="colHanhDong" text="Hành động" prefWidth="150">
-                        <cellValueFactory>
-                            <PropertyValueFactory property="dummy"/>
-                        </cellValueFactory>
-                    </TableColumn>
+                    <TableColumn fx:id="colHanhDong" text="Hành động" prefWidth="150"/>
                 </columns>
                 <placeholder>
                     <Label text="Chưa có dữ liệu truy xuất" styleClass="placeholder-text"/>
